@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
 namespace backend.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210406102630_add table image")]
+    partial class addtableimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,15 +246,13 @@ namespace backend.Migrations
                     b.Property<string>("DescriptionImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("pathImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Image");
                 });
@@ -267,6 +267,9 @@ namespace backend.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -276,6 +279,10 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ImageId")
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.ToTable("Products");
                 });
@@ -331,24 +338,19 @@ namespace backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("backend.Models.Image", b =>
-                {
-                    b.HasOne("backend.Models.Product", "Product")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("backend.Models.Product", b =>
                 {
                     b.HasOne("backend.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("backend.Models.Image", "Image")
+                        .WithOne("Product")
+                        .HasForeignKey("backend.Models.Product", "ImageId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("backend.Models.Category", b =>
@@ -356,9 +358,9 @@ namespace backend.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("backend.Models.Product", b =>
+            modelBuilder.Entity("backend.Models.Image", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }
