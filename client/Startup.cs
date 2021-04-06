@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Reponsitories.ProductReponsitories;
+using client.Extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,8 +27,6 @@ namespace client
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddHttpClient();
-
       // JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
       services.AddAuthentication(options =>
@@ -58,6 +58,8 @@ namespace client
             //   RoleClaimType = "role"
             // };
           });
+
+      services.AddHttpClientCusTom(Configuration);
 
       services.AddControllersWithViews();
     }

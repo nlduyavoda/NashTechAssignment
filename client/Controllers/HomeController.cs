@@ -7,25 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using client.Models;
 using Microsoft.AspNetCore.Authorization;
+using backend.Reponsitories.ProductReponsitories;
 
 namespace client.Controllers
 {
   public class HomeController : Controller
   {
     private readonly ILogger<HomeController> _logger;
+    private readonly IProduct _product;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger,
+      IProduct product)
     {
       _logger = logger;
+      _product = product;
     }
 
     public IActionResult Index()
     {
       return View();
     }
-    public IActionResult Product()
+    public async Task<IActionResult> Product()
     {
-      return View();
+      var product = await _product.GetProductById(1);
+      return View(product);
     }
 
 
