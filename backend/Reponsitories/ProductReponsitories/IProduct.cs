@@ -6,7 +6,7 @@ namespace backend.Reponsitories.ProductReponsitories
 {
   public interface IProduct
   {
-    Task<ProductVM> GetProduct(double Id);
-    IEnumerable<ProductVM> GetProducts();
+    Task<ProductVM> GetProduct(int Id);
+    Task<IEnumerable<ProductVM>> GetProducts();
   }
 }

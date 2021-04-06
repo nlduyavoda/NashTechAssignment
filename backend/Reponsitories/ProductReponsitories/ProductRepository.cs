@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using backend.Models;
 using LibraryShare.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Reponsitories.ProductReponsitories
 {
@@ -16,7 +17,7 @@ namespace backend.Reponsitories.ProductReponsitories
       _mapper = mapper;
       _context = context;
     }
-    public async Task<ProductVM> GetProduct(double Id)
+    public async Task<ProductVM> GetProduct(int Id)
     {
       var product = await _context.Products.FindAsync(Id);
       var productVM = _mapper.Map<ProductVM>(product);
@@ -24,15 +25,11 @@ namespace backend.Reponsitories.ProductReponsitories
       return productVM;
     }
 
-    public IEnumerable<ProductVM> GetProducts()
+    public async Task<IEnumerable<ProductVM>> GetProducts()
     {
-      return new List<ProductVM>
-      {
-          new ProductVM {
-              Name = "test1",
-              Price = 1000
-          },
-      };
+      var product = await _context.Products.ToListAsync();
+      var ProductsRes = _mapper.Map<IEnumerable<ProductVM>>(product);
+      return ProductsRes;
     }
   }
 }

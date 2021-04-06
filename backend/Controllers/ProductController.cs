@@ -20,16 +20,15 @@ namespace backend.Controllers
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProductVM>> GetProduct(double Id)
+    public async Task<ActionResult<ProductVM>> GetProduct(int Id)
     {
       var result = await _productRepository.GetProduct(Id);
       return Ok(result);
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductVM>>> GetProduct()
+    public async Task<ActionResult<IEnumerable<ProductVM>>> GetProducts()
     {
-      await Task.CompletedTask;
-      var result = _productRepository.GetProducts();
+      var result = await _productRepository.GetProducts();
       return Ok(result);
     }
   }
