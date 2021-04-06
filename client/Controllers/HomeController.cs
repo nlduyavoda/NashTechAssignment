@@ -23,6 +23,11 @@ namespace client.Controllers
     {
       return View();
     }
+    public IActionResult Product()
+    {
+      return View();
+    }
+
 
     [Authorize]
     public IActionResult Privacy()
