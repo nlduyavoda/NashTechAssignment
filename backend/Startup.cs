@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using backend.Models;
+using backend.Reponsitories.ProductReponsitories;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,8 @@ namespace backend
         options.UseSqlServer(Configuration.GetConnectionString("Application"));
       });
 
+      services.AddTransient<IProduct, ProductRepository>();
+
       services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyDbContext>();
@@ -55,8 +59,8 @@ namespace backend
           .AddInMemoryClients(Config.Clients)
           .AddTestUsers(TestUsers.Users)
           .AddDeveloperSigningCredential();
-
       services.AddControllersWithViews();
+      services.AddAutoMapper(Assembly.GetExecutingAssembly());
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend", Version = "v1" });
