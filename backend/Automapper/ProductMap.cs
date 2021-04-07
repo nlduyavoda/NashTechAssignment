@@ -8,7 +8,10 @@ namespace backend.Automapper
   {
     public ProductMap()
     {
-      CreateMap<ProductVM, Product>().ReverseMap();
+      CreateMap<ProductVM, Product>()
+        .ForMember(product => product.Images, i =>
+            i.MapFrom(productVM => productVM.Images))
+        .ReverseMap();
     }
   }
 }
