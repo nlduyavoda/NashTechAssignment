@@ -59,8 +59,11 @@ namespace backend
           .AddInMemoryClients(Config.Clients)
           .AddTestUsers(TestUsers.Users)
           .AddDeveloperSigningCredential();
+
       services.AddControllersWithViews();
+
       services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend", Version = "v1" });
