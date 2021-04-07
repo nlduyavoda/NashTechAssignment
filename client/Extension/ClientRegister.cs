@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using backend.Reponsitories.ProductReponsitories;
+using client.services.HttpClientService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -21,14 +21,11 @@ namespace client.Extension
       {
         var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
         var accessToken = await httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
         client.BaseAddress = new Uri(config["BackEndUrl"]);
-        //   client.BaseAddress = new Uri("http://localhost:5000");
-
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
       });
 
-      service.AddHttpClient<IProduct, ProductRepository>(configureClient);
+      service.AddHttpClient<IHttpClientServices, HttpClientServices>(configureClient);
     }
   }
 }

@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LibraryShare.Product;
 
-namespace backend.Reponsitories.ProductReponsitories
+namespace client.services.HttpClientService
 {
-  public interface IProduct
+  public interface IHttpClientServices
   {
     Task<ProductVM> GetProductById(int id);
+    Task<IEnumerable<ProductVM>> GetProducts();
+
   }
 }
