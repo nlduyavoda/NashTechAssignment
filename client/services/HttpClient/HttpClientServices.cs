@@ -22,9 +22,12 @@ namespace client.services.HttpClientService
       return product;
     }
 
-    public Task<IEnumerable<ProductVM>> GetProducts()
+    public async Task<IEnumerable<ProductVM>> GetProducts()
     {
-      throw new System.NotImplementedException();
+      var res = await _client.GetAsync(Endpoints.Product);
+      res.EnsureSuccessStatusCode();
+      var products = await res.Content.ReadAsAsync<IEnumerable<ProductVM>>();
+      return products;
     }
   }
 }
