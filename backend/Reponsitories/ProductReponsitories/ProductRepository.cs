@@ -27,8 +27,11 @@ namespace backend.Reponsitories.ProductReponsitories
 
     public async Task<IEnumerable<ProductVM>> GetProducts()
     {
-      var product = await _context.Products.ToListAsync();
-      var ProductsRes = _mapper.Map<IEnumerable<ProductVM>>(product);
+      var products = await _context.Products
+        .Include(product => product.Images)
+        .ToListAsync();
+
+      var ProductsRes = _mapper.Map<IEnumerable<ProductVM>>(products);
       return ProductsRes;
     }
   }
