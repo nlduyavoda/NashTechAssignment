@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using client.Constatnts;
+using LibraryShare.Categories;
 using LibraryShare.Product;
 
 namespace client.services.HttpClientService
@@ -28,6 +29,13 @@ namespace client.services.HttpClientService
       res.EnsureSuccessStatusCode();
       var products = await res.Content.ReadAsAsync<IEnumerable<ProductVM>>();
       return products;
+    }
+    public async Task<IEnumerable<CategoriesVM>> GetCategories()
+    {
+      var res = await _client.GetAsync(Endpoints.Product);
+      res.EnsureSuccessStatusCode();
+      var Categories = await res.Content.ReadAsAsync<IEnumerable<CategoriesVM>>();
+      return Categories;
     }
   }
 }
