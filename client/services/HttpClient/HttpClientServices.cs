@@ -32,7 +32,7 @@ namespace client.services.HttpClientService
     }
     public async Task<IEnumerable<CategoriesVM>> GetCategories()
     {
-      var res = await _client.GetAsync(Endpoints.Product);
+      var res = await _client.GetAsync(Endpoints.Categories);
       res.EnsureSuccessStatusCode();
       var Categories = await res.Content.ReadAsAsync<IEnumerable<CategoriesVM>>();
       return Categories;
