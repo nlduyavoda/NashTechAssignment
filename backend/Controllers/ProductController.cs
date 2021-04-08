@@ -23,6 +23,9 @@ namespace backend.Controllers
     public async Task<ActionResult<ProductVM>> GetProduct(int Id)
     {
       var result = await _productRepository.GetProduct(Id);
+
+      if (result is null) return NotFound("mdfk");
+
       return Ok(result);
     }
     [HttpGet]

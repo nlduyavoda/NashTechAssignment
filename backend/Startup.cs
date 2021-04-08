@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using backend.Models;
+using backend.Reponsitories.CategoryRepositories;
 using backend.Reponsitories.ProductReponsitories;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +40,7 @@ namespace backend
       });
 
       services.AddTransient<IProduct, ProductRepository>();
+      services.AddTransient<ICategory, CategoryRepository>();
 
       services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
