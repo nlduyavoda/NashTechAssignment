@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using client.Constatnts;
 using client.services.HttpClientService;
 using LibraryShare.Product;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,11 @@ namespace client.Controllers
     {
       _client = client;
     }
-    public async Task<ActionResult<IEnumerable<ProductVM>>> Index()
+    [HttpGet("[controller]/{id}")]
+    public async Task<ActionResult<ProductVM>> Index(int id)
     {
-      var product = await _client.GetProducts();
+      var product = await _client.GetProductById(id);
       return View(product);
     }
-
-
   }
 }

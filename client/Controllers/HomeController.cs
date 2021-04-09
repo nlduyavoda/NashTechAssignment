@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using client.services.HttpClientService;
 using LibraryShare.Product;
 
+
+
 namespace client.Controllers
 {
   public class HomeController : Controller
@@ -29,7 +31,7 @@ namespace client.Controllers
     [Authorize]
     public IActionResult Privacy()
     {
-      return View();
+      return View("Index");
     }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

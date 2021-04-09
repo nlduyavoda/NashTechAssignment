@@ -10,5 +10,6 @@ namespace client.services.HttpClientService
     Task<ProductVM> GetProductById(int id);
     Task<IEnumerable<ProductVM>> GetProducts();
     Task<IEnumerable<CategoriesVM>> GetCategories();
+
   }
 }

@@ -14,7 +14,6 @@ namespace client.services.HttpClientService
     {
       _client = client;
     }
-
     public async Task<ProductVM> GetProductById(int id)
     {
       var res = await _client.GetAsync(Endpoints.ProductById(id));
@@ -22,7 +21,6 @@ namespace client.services.HttpClientService
       var product = await res.Content.ReadAsAsync<ProductVM>();
       return product;
     }
-
     public async Task<IEnumerable<ProductVM>> GetProducts()
     {
       var res = await _client.GetAsync(Endpoints.Product);
@@ -37,5 +35,7 @@ namespace client.services.HttpClientService
       var Categories = await res.Content.ReadAsAsync<IEnumerable<CategoriesVM>>();
       return Categories;
     }
+
+
   }
 }
