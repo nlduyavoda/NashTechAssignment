@@ -19,7 +19,10 @@ namespace backend.Reponsitories.ProductReponsitories
     }
     public async Task<ProductVM> GetProduct(int Id)
     {
-      var product = await _context.Products.FindAsync(Id);
+      var product = await _context.Products
+          .Include(p => p.Images)
+          .FirstOrDefaultAsync(p => p.Id.Equals(Id));
+
       var productVM = _mapper.Map<ProductVM>(product);
 
       return productVM;
