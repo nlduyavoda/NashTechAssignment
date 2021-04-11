@@ -28,6 +28,13 @@ namespace client.services.HttpClientService
       var products = await res.Content.ReadAsAsync<IEnumerable<ProductVM>>();
       return products;
     }
+    public async Task<CategoriesVM> GetCategoriesById(int id)
+    {
+      var res = await _client.GetAsync(Endpoints.CategoriesById(id));
+      res.EnsureSuccessStatusCode();
+      var category = await res.Content.ReadAsAsync<CategoriesVM>();
+      return category;
+    }
     public async Task<IEnumerable<CategoriesVM>> GetCategories()
     {
       var res = await _client.GetAsync(Endpoints.Categories);

@@ -9,6 +9,7 @@ namespace client.services.HttpClientService
   {
     Task<ProductVM> GetProductById(int id);
     Task<IEnumerable<ProductVM>> GetProducts();
+    Task<CategoriesVM> GetCategoriesById(int id);
     Task<IEnumerable<CategoriesVM>> GetCategories();
 
   }
