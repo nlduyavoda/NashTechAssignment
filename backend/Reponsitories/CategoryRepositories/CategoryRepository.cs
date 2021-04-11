@@ -17,18 +17,26 @@ namespace backend.Reponsitories.CategoryRepositories
       _mapper = mapper;
       _context = context;
     }
+
+
+    public async Task<CategoriesVM> GetCategory(int Id)
+    {
+      var Categories = await _context.Categories
+        .Include(p => p.Products)
+        .ThenInclude(i => i.Images)
+        .FirstOrDefaultAsync(p => p.Id.Equals(Id));
+
+      var CategoriesVM = _mapper.Map<CategoriesVM>(Categories);
+      return CategoriesVM;
+    }
     public async Task<IEnumerable<CategoriesVM>> GetCategories()
     {
       var Categories = await _context.Categories
-        .ToListAsync();
+       .Include(Categories => Categories.Products)
+       .ToListAsync();
 
-      var CategoriesRes = _mapper.Map<IEnumerable<CategoriesVM>>(Categories);
-      return CategoriesRes;
+      var CategoriesVM = _mapper.Map<IEnumerable<CategoriesVM>>(Categories);
+      return CategoriesVM;
     }
-
-    // public Task<CategoriesVM> GetCategory(int Id)
-    // {
-    //   throw new System.NotImplementedException();
-    // }
   }
 }

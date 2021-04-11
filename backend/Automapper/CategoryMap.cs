@@ -8,7 +8,10 @@ namespace backend.Automapper
   {
     public CategoryMap()
     {
-      CreateMap<CategoriesVM, Category>().ReverseMap();
+      CreateMap<CategoriesVM, Category>()
+       .ForMember(Category => Category.Products, i =>
+            i.MapFrom(CategoriesVM => CategoriesVM.Products))
+            .ReverseMap();
     }
   }
 }

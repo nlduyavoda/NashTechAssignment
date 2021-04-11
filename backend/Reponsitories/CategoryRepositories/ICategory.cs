@@ -6,7 +6,7 @@ namespace backend.Reponsitories.CategoryRepositories
 {
   public interface ICategory
   {
-    // Task<CategoriesVM> GetCategory(int Id);
+    Task<CategoriesVM> GetCategory(int Id);
     Task<IEnumerable<CategoriesVM>> GetCategories();
   }
 }

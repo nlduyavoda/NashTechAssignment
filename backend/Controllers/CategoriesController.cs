@@ -14,16 +14,22 @@ namespace backend.Controllers
 
   public class CategoriesController : ControllerBase
   {
-    private ICategory _Category;
-    public CategoriesController(ICategory Category)
+    private ICategory _CategoryRepository;
+    public CategoriesController(ICategory CategoryRepository)
     {
-      _Category = Category;
+      _CategoryRepository = CategoryRepository;
     }
-
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CategoriesVM>> GetCategory(int Id)
+    {
+      var result = await _CategoryRepository.GetCategory(Id);
+      if (result is null) return NotFound("mdfk");
+      return Ok(result);
+    }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoriesVM>>> GetCategories()
     {
-      var result = await _Category.GetCategories();
+      var result = await _CategoryRepository.GetCategories();
       return Ok(result);
     }
   }
