@@ -28,6 +28,7 @@ namespace client.Controllers
       var product = await _client.GetProducts();
       return View(product);
     }
+
     [Authorize]
     public IActionResult Privacy()
     {

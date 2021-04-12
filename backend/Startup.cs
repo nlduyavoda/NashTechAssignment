@@ -50,6 +50,12 @@ namespace backend
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyDbContext>();
 
+      services.ConfigureApplicationCookie(config =>
+        {
+          config.LoginPath = "/Auth/Login";
+          config.LogoutPath = "/Auth/Logout";
+        });
+
       services.AddIdentityServer(options =>
       {
         options.Events.RaiseErrorEvents = true;
@@ -60,10 +66,11 @@ namespace backend
 
         options.EmitStaticAudienceClaim = true;
       })
+          .AddAspNetIdentity<IdentityUser>()
           .AddInMemoryIdentityResources(Config.IdentityResources)
           .AddInMemoryApiScopes(Config.ApiScopes)
           .AddInMemoryClients(Config.Clients)
-          .AddTestUsers(TestUsers.Users)
+          // .AddTestUsers(TestUsers.Users)
           .AddDeveloperSigningCredential();
 
       services.AddControllersWithViews();

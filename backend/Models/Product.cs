@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
-  public class Product
+  public class Product : Autiable
   {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -16,5 +17,7 @@ namespace backend.Models
     public virtual List<Image> Images { get; set; }
     public int? CategoryId { get; set; }
     public virtual Category Category { get; set; }
+    [DefaultValue(false)]
+    public bool IsDelete { get; set; }
   }
 }

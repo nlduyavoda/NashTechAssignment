@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Reponsitories.ProductReponsitories;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using backend.Models;
+using backend.Constatnts;
 
 namespace backend.Controllers
 {
@@ -33,6 +35,30 @@ namespace backend.Controllers
     {
       var result = await _productRepository.GetProducts();
       return Ok(result);
+    }
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ProductVM>> RemoveProduct(int id)
+    {
+      var productRes = await _productRepository.DeleteProduct(id);
+
+      return Ok(productRes);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ProductVM>> CreateProduct([FromBody] ProductVM productReq)
+    {
+      var product = await _productRepository.CreateProduct(productReq);
+
+      return Created(Endpoints.Product, product);
+    }
+
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ProductVM>> UpdateProduct(int id, ProductVM productReq)
+    {
+      var productRes = await _productRepository.UpdateProduct(id, productReq);
+
+      return Ok(productRes);
     }
   }
 }

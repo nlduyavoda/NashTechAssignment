@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,36 @@ namespace backend.Controllers
       _interaction = interaction;
       _signInManager = signInManager;
       _userManager = userManager;
+    }
+    [HttpGet]
+    public IActionResult Login(string returnUrl)
+    {
+      return View(new LoginAuthModel { ReturnUrl = returnUrl });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginAuthModel loginVm, string button)
+    {
+      var context = await _interaction.GetAuthorizationContextAsync(loginVm.ReturnUrl);
+
+      if (button.Equals("cancel"))
+      {
+        await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+
+        return Redirect(context.RedirectUri);
+      }
+
+      var result = await _signInManager.PasswordSignInAsync(loginVm.Username, loginVm.Password, false, false);
+
+      if (!result.Succeeded)
+      {
+        ViewBag.Error = "Invalid Username or Password";
+        return View("Login", loginVm);
+      }
+
+      ViewBag.Error = null;
+
+      return Redirect(loginVm.ReturnUrl);
     }
     [HttpGet]
     public IActionResult Register(string returnUrl)

@@ -19,7 +19,7 @@ namespace backend.Controllers
       _ratingRepository = ratingRepository;
     }
 
-    // [Authorize("Bearer")]
+    [Authorize("Bearer")]
     [HttpPost]
     public async Task<IActionResult> Create(RatingRes ratingRes)
     {

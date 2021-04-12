@@ -26,8 +26,7 @@ namespace backend.Reponsitories.RatingRepositories
     {
       var rate = _mapper.Map<Rating>(ratingRes);
 
-      var userId = _IhttpContextAccessor.HttpContext.User
-      .FindFirstValue("sub");
+      var userId = _IhttpContextAccessor.HttpContext.User.FindFirstValue("sub");
 
       rate.UserId = userId;
 

@@ -79,6 +79,11 @@ namespace client
       {
         option.AllowAnyOrigin();
       });
+      app.UseCookiePolicy(new CookiePolicyOptions
+      {
+        MinimumSameSitePolicy = SameSiteMode.None,
+        Secure = CookieSecurePolicy.None,
+      });
       // app.UseHttpsRedirection();
       app.UseStaticFiles();
 
