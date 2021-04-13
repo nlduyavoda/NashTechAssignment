@@ -1,23 +1,21 @@
 import logo from './logo.svg';
+import { Container } from 'reactstrap';
+
+import Nav from './components/Header';
+import TopBanner from './components/TopBanner';
 import './App.css';
+import ProductProvider, { ProductContext } from './contexts/products';
+import { useContext } from 'react';
 
 function App() {
+  const {products} = useContext(ProductContext);
+
+  console.log(products);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Nav />
+      <TopBanner />
     </div>
   );
 }
