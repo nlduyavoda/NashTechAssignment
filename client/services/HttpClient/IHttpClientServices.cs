@@ -11,6 +11,7 @@ namespace client.services.HttpClientService
     Task<IEnumerable<ProductVM>> GetProducts();
     Task<CategoriesVM> GetCategoriesById(int id);
     Task<IEnumerable<CategoriesVM>> GetCategories();
+    Task<bool> Voting(int Id, int voting);
 
   }
 }

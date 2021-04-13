@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using client.Constatnts;
 using client.services.HttpClientService;
 using LibraryShare.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace client.Controllers
@@ -20,6 +21,19 @@ namespace client.Controllers
     {
       var product = await _client.GetProductById(id);
       return View(product);
+    }
+    // [Authorize]
+    [HttpPost("[controller]/{id}")]
+    public async Task<IActionResult> Voting(int id, int rating)
+    {
+      var result = await _client.Voting(id, rating);
+
+      if (result is false)
+      {
+        return Content("false");
+      }
+
+      return RedirectToAction("Index", "Home");
     }
   }
 }

@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using client.Constatnts;
 using LibraryShare.Categories;
 using LibraryShare.Product;
+using LibraryShare.Rating;
+using Newtonsoft.Json;
 
 namespace client.services.HttpClientService
 {
@@ -43,6 +46,24 @@ namespace client.services.HttpClientService
       return Categories;
     }
 
+    public async Task<bool> Voting(int Id, int voting)
+    {
+      var rateRequest = new RatingRes
+      {
+        ProductId = Id,
+        Value = voting
+      };
 
+      var json = JsonConvert.SerializeObject(rateRequest);
+      var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+      var res = await _client.PostAsync(Endpoints.Rate, data);
+
+      res.EnsureSuccessStatusCode();
+
+      var result = await res.Content.ReadAsAsync<bool>();
+
+      return result;
+    }
   }
 }
