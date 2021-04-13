@@ -32,6 +32,7 @@ namespace backend.Reponsitories.ProductReponsitories
     {
       var products = await _context.Products
         .Include(product => product.Images)
+        .Include(product => product.Rated)
         .ToListAsync();
 
       var ProductsRes = _mapper.Map<IEnumerable<ProductVM>>(products);
