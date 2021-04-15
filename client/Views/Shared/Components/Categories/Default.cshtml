@@ -1,0 +1,12 @@
+@model IEnumerable<CategoriesVM>
+
+@foreach (var category in Model)
+{
+    <div class="col-lg-3">
+    <a href="~/Categories/@category.Id">
+        <div class="categories__item set-bg" data-setbg="@category.pathImage">
+            <h5><a href="~/Categories/@category.Id">@category.Name</a></h5>
+        </div>
+    </a>
+</div>
+}

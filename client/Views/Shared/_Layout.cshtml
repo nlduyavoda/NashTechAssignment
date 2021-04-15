@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    
+
+
+<body>
+    <partial name="_headerPartial" />
+    @RenderBody()
+    <partial name="_footerPartial" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
