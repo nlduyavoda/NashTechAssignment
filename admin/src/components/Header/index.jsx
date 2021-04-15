@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Collapse,
   Navbar,
@@ -13,9 +13,13 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
+
+import { ProductContext } from '../../contexts/products';
 
 export default (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const {cart, total} = useContext(ProductContext);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -50,7 +54,13 @@ export default (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+
+          <Link to='/cartdetail'>
+            <NavbarBrand NavbarBrand >
+               {cart.length} items - ${total}
+            </NavbarBrand>
+          </Link>
+
         </Collapse>
       </Navbar>
     </div>
