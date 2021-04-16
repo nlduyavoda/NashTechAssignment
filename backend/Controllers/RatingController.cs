@@ -7,26 +7,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
-  [ApiController]
-  [Route("api/[controller]")]
+    [ApiController]
+    [Route("api/[controller]")]
 
-  public class RatingController : ControllerBase
-  {
-    private readonly IRatingRepository _ratingRepository;
-
-    public RatingController(IRatingRepository ratingRepository)
+    public class RatingController : ControllerBase
     {
-      _ratingRepository = ratingRepository;
+        private readonly IRatingRepository _ratingRepository;
+
+        public RatingController(IRatingRepository ratingRepository)
+        {
+            _ratingRepository = ratingRepository;
+        }
+
+        // [Authorize("Bearer")]
+        [HttpPost]
+        public async Task<IActionResult> Create(RatingRes ratingRes)
+        {
+            var result = await _ratingRepository.Create(ratingRes);
+
+            return Created(Endpoints.Rate, result);
+        }
+
     }
-
-    [Authorize("Bearer")]
-    [HttpPost]
-    public async Task<IActionResult> Create(RatingRes ratingRes)
-    {
-      var result = await _ratingRepository.Create(ratingRes);
-
-      return Created(Endpoints.Rate, result);
-    }
-
-  }
 }
