@@ -1,6 +1,7 @@
 
+import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
-
+import {host} from '../config';
 import items from '../productItems.json';
 
 export const ProductContext = createContext({});
@@ -22,12 +23,20 @@ export default ({children}) => {
   };
 
   useEffect(() => {
-    setTotal(cart.reduce((newTotal, cartItem) => {
-      newTotal += cartItem.quantity * cartItem.item.price;
+    setTotal(cart.reduce((newTotal, cartItem) => 
+      newTotal += cartItem.quantity * cartItem.item.price, 0));
 
-      return newTotal;
-    }, 0));
   }, [cart]);
+
+  useEffect(()=>{
+    axios.get(host+"/api/Product")
+      .then(resp =>{
+      var re = resp.data;
+      // setProducts(re);
+      console.log(re);
+      })
+      .catch(err=> console.log(err))
+  },[])
 
   return (
     <ProductContext.Provider value={{
