@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using backend.Models;
+using backend.Reponsitories.CategoryRepositories;
+using backend.Reponsitories.ProductReponsitories;
+using backend.Reponsitories.RatingRepositories;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -36,9 +41,20 @@ namespace backend
         options.UseSqlServer(Configuration.GetConnectionString("Application"));
       });
 
+      services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      services.AddTransient<IProduct, ProductRepository>();
+      services.AddTransient<ICategory, CategoryRepository>();
+      services.AddTransient<IRatingRepository, RatingRepository>();
+
       services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyDbContext>();
+
+      services.ConfigureApplicationCookie(config =>
+        {
+          config.LoginPath = "/Auth/Login";
+          config.LogoutPath = "/Auth/Logout";
+        });
 
       services.AddIdentityServer(options =>
       {
@@ -50,13 +66,16 @@ namespace backend
 
         options.EmitStaticAudienceClaim = true;
       })
+          .AddAspNetIdentity<IdentityUser>()
           .AddInMemoryIdentityResources(Config.IdentityResources)
           .AddInMemoryApiScopes(Config.ApiScopes)
           .AddInMemoryClients(Config.Clients)
-          .AddTestUsers(TestUsers.Users)
+          // .AddTestUsers(TestUsers.Users)
           .AddDeveloperSigningCredential();
 
       services.AddControllersWithViews();
+
+      services.AddAutoMapper(Assembly.GetExecutingAssembly());
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend", Version = "v1" });

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using client.Extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,8 +26,6 @@ namespace client
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddHttpClient();
-
       // JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
       services.AddAuthentication(options =>
@@ -59,6 +58,8 @@ namespace client
             // };
           });
 
+      services.AddHttpClientCusTom(Configuration);
+
       services.AddControllersWithViews();
     }
 
@@ -77,6 +78,11 @@ namespace client
       app.UseCors(option =>
       {
         option.AllowAnyOrigin();
+      });
+      app.UseCookiePolicy(new CookiePolicyOptions
+      {
+        MinimumSameSitePolicy = SameSiteMode.None,
+        Secure = CookieSecurePolicy.None,
       });
       // app.UseHttpsRedirection();
       app.UseStaticFiles();

@@ -7,29 +7,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using client.Models;
 using Microsoft.AspNetCore.Authorization;
+using client.services.HttpClientService;
+using LibraryShare.Product;
+
+
 
 namespace client.Controllers
 {
   public class HomeController : Controller
   {
     private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IHttpClientServices _client;
+    public HomeController(ILogger<HomeController> logger, IHttpClientServices client)
     {
       _logger = logger;
+      _client = client;
     }
-
-    public IActionResult Index()
+    public async Task<ActionResult<IEnumerable<ProductVM>>> Index()
     {
-      return View();
+      var product = await _client.GetProducts();
+      return View(product);
     }
 
     [Authorize]
     public IActionResult Privacy()
     {
-      return View();
+      return View("Index");
     }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
