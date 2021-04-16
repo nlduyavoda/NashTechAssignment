@@ -9,31 +9,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace client.Controllers
 {
-  public class ProductController : Controller
-  {
-    private readonly IHttpClientServices _client;
-    public ProductController(IHttpClientServices client)
+    public class ProductController : Controller
     {
-      _client = client;
+        private readonly IHttpClientServices _client;
+        public ProductController(IHttpClientServices client)
+        {
+            _client = client;
+        }
+        [HttpGet("[controller]/{id}")]
+        public async Task<ActionResult<ProductVM>> Index(int id)
+        {
+            var product = await _client.GetProductById(id);
+            return View(product);
+        }
+        // [Authorize]
+        [HttpPost("[controller]/{id}")]
+        public async Task<IActionResult> Voting(int id, int rating)
+        {
+            var result = await _client.Voting(id, rating);
+            if (result is false)
+            {
+                return Content("false");
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
-    [HttpGet("[controller]/{id}")]
-    public async Task<ActionResult<ProductVM>> Index(int id)
-    {
-      var product = await _client.GetProductById(id);
-      return View(product);
-    }
-    // [Authorize]
-    [HttpPost("[controller]/{id}")]
-    public async Task<IActionResult> Voting(int id, int rating)
-    {
-      var result = await _client.Voting(id, rating);
-
-      if (result is false)
-      {
-        return Content("false");
-      }
-
-      return RedirectToAction("Index", "Home");
-    }
-  }
 }
