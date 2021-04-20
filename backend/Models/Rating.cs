@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace backend.Models
 {
-  public class Rating : Autiable
+  public class Rating
   {
     public int Id { get; set; }
     public int Value { get; set; }
