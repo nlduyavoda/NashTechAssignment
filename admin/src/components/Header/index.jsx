@@ -13,13 +13,13 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
-
-import { ProductContext } from '../../contexts/products';
+import { Link } from 'react-router-dom';
+import { Addform } from '../../components/form/product/add';
+// import { ProductContext } from '../../contexts/products';
 
 export default (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const {cart, total} = useContext(ProductContext);
+  // const { cart, total } = useContext(ProductContext);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -41,8 +41,10 @@ export default (props) => {
                 Options
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>
-                  Option 1
+                <DropdownItem >
+                  <Link to='/components/form/product/Addform'>
+                    Create Product
+                  </Link>
                 </DropdownItem>
                 <DropdownItem>
                   Option 2
@@ -54,10 +56,9 @@ export default (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-
           <Link to='/cartdetail'>
             <NavbarBrand NavbarBrand >
-               {cart.length} items - ${total}
+              {/* {cart.length} items - ${total} */}
             </NavbarBrand>
           </Link>
 
