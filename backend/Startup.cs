@@ -24,93 +24,99 @@ using Microsoft.OpenApi.Models;
 
 namespace backend
 {
-  public class Startup
-  {
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-      Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddDbContext<MyDbContext>(options =>
-      {
-        options.UseSqlServer(Configuration.GetConnectionString("Application"));
-      });
-
-      services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-      services.AddTransient<IProduct, ProductRepository>();
-      services.AddTransient<ICategory, CategoryRepository>();
-      services.AddTransient<IRatingRepository, RatingRepository>();
-
-      services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<MyDbContext>();
-
-      services.ConfigureApplicationCookie(config =>
+        public Startup(IConfiguration configuration)
         {
-          config.LoginPath = "/Auth/Login";
-          config.LogoutPath = "/Auth/Logout";
-        });
+            Configuration = configuration;
+        }
 
-      services.AddIdentityServer(options =>
-      {
-        options.Events.RaiseErrorEvents = true;
-        options.Events.RaiseInformationEvents = true;
-        options.Events.RaiseFailureEvents = true;
-        options.Events.RaiseSuccessEvents = true;
-        // options.Authentication
+        public IConfiguration Configuration { get; }
 
-        options.EmitStaticAudienceClaim = true;
-      })
-          .AddAspNetIdentity<IdentityUser>()
-          .AddInMemoryIdentityResources(Config.IdentityResources)
-          .AddInMemoryApiScopes(Config.ApiScopes)
-          .AddInMemoryClients(Config.Clients)
-          // .AddTestUsers(TestUsers.Users)
-          .AddDeveloperSigningCredential();
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<MyDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Application"));
+            });
 
-      services.AddControllersWithViews();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IProduct, ProductRepository>();
+            services.AddTransient<ICategory, CategoryRepository>();
+            services.AddTransient<IRatingRepository, RatingRepository>();
 
-      services.AddAutoMapper(Assembly.GetExecutingAssembly());
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend", Version = "v1" });
-      });
+            services.AddDefaultIdentity<IdentityUser>()
+                      .AddRoles<IdentityRole>()
+                      .AddEntityFrameworkStores<MyDbContext>();
+
+            services.ConfigureApplicationCookie(config =>
+              {
+                  config.LoginPath = "/Auth/Login";
+                  config.LogoutPath = "/Auth/Logout";
+              });
+
+            services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+          // options.Authentication
+
+          options.EmitStaticAudienceClaim = true;
+            })
+                .AddAspNetIdentity<IdentityUser>()
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryClients(Config.Clients)
+                // .AddTestUsers(TestUsers.Users)
+                .AddDeveloperSigningCredential();
+
+            services.AddControllersWithViews();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend", Version = "v1" });
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backend v1"));
+            }
+
+            // app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.None,
+                Secure = CookieSecurePolicy.None,
+            });
+
+            app.UseCors(o =>
+            {
+                o.AllowAnyHeader();
+                o.AllowAnyMethod();
+                o.AllowAnyOrigin();
+            });
+            app.UseRouting();
+
+            app.UseIdentityServer();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
+        }
     }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backend v1"));
-      }
-
-      // app.UseHttpsRedirection();
-      app.UseStaticFiles();
-
-      app.UseCookiePolicy(new CookiePolicyOptions
-      {
-        MinimumSameSitePolicy = SameSiteMode.None,
-        Secure = CookieSecurePolicy.None,
-      });
-
-      app.UseRouting();
-
-      app.UseIdentityServer();
-
-      app.UseAuthorization();
-
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapDefaultControllerRoute();
-      });
-    }
-  }
 }
