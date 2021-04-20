@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import { ProductContext } from '../../contexts/products';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export default (props) => {

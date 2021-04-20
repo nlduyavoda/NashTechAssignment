@@ -10,7 +10,9 @@ import category from './components/Product';
 import { BrowserRouter, Route } from "react-router-dom";
 import CartDetail from './Container/CartDetail';
 import Home from './Container/Home';
-import { Addform } from './components/form/product/add';
+import Addform from './components/form/product/add';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 function App() {
