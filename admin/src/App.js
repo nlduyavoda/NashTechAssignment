@@ -1,12 +1,9 @@
 import logo from './logo.svg';
 import { Container, Table } from 'reactstrap';
 import Header from './components/Header';
-import TopBanner from './components/TopBanner';
 import './App.css';
 import ProductProvider, { ProductContext } from './contexts/products';
 import { useContext } from 'react';
-import Product from './components/Product';
-import category from './components/Product';
 import { BrowserRouter, Route } from "react-router-dom";
 import CartDetail from './Container/CartDetail';
 import Home from './Container/Home';
@@ -17,7 +14,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const { products } = useContext(ProductContext);
-  console.log(products);
   return (
     <BrowserRouter>
       <Header />
