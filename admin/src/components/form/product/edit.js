@@ -8,7 +8,7 @@ import ProductProvider, { ProductContext } from '../../../contexts/products';
 
 // import { ProductContext } from "../contexts/products";
 
-const Addform = () => {
+const editform = () => {
     const { products, categories } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
 
@@ -68,5 +68,5 @@ const Addform = () => {
 }
 
 
-export default Addform;
+export default editform;
 

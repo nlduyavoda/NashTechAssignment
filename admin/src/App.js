@@ -14,6 +14,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const { products } = useContext(ProductContext);
+  console.log([products])
+  const setValue = (date) => {
+    console.log(date)
+
+  }
   return (
     <BrowserRouter>
       <Header />
@@ -23,24 +28,24 @@ function App() {
         <Table responsive={true} color={true} striped={true}>
           <thead>
             <tr>
-              <th>#</th>
+              <th>STT</th>
               <th>Product Name</th>
               <th>Product Price</th>
               <th>Category</th>
               <th>Product Images</th>
-              <th>Product Description</th>
+              <th>#</th>
+              {/* <th>Product Description</th> */}
             </tr>
           </thead>
           <tbody>
             {products.map((prod, index) => (
-              <tr key={prod.id}>
+              prod.isDelete ? <tr key={prod.id}>
                 <th className="align-middle" scope="row">
                   {index + 1}
                 </th>
                 <td className="align-middle">{prod.name}</td>
                 <td className="align-middle">$ {prod.price}</td>
                 <td className="align-middle"> {prod.categoryName}</td>
-
                 {prod.images.length > 0 && (
                   <td>
                     <img
@@ -51,11 +56,17 @@ function App() {
                   </td>
                 )}
 
-                <td className="align-middle"></td>
-              </tr>
+                <td className="align-middle">
+                  <button className="btn btn-primary" onClick={() => setValue(!prod.isDelete)}>Edit</button>
+                  <button className="btn btn-danger" onClick={() => setValue(!prod.isDelete)}>Delete</button>
+                </td>
+              </tr> : ''
             ))}
           </tbody>
         </Table>
+        {/* <ProductContext.Provider value={this.products.name}>
+          <Content />
+        </ProductContext.Provider> */}
       </Route>
       <Route exact path="/CartDetail">
         <CartDetail />

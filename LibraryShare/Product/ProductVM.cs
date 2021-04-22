@@ -13,6 +13,7 @@ namespace LibraryShare.Product
         public int Rated { get; set; }
         public List<ImageVM> Images { get; set; }
         public string CategoryName { get; set; }
+        public bool isDelete { get; set; }
 
     }
 }

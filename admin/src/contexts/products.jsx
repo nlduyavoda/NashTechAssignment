@@ -40,6 +40,7 @@ export default ({ children }) => {
       })
       .catch(err => console.log(err))
   }, [])
+
   //api get categories
   useEffect(() => {
     axios.get(host + "/api/categories")
@@ -49,15 +50,6 @@ export default ({ children }) => {
       })
       .catch(err => console.log(err))
   }, [])
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setCategories(await GetCategories());
-  //     setProductItems(await GetProducts());
-  //   };
-  //   fetchData();
-  // }, []);
-
 
   return (
     <ProductContext.Provider value={{

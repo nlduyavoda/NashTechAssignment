@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using backend.Models;
 using backend.Reponsitories.CategoryRepositories;
 using backend.Reponsitories.ProductReponsitories;
 using backend.Reponsitories.RatingRepositories;
+using backend.Services;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +17,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -41,6 +44,13 @@ namespace backend
                 options.UseSqlServer(Configuration.GetConnectionString("Application"));
             });
 
+            services.AddScoped(x =>
+            {
+                return new BlobServiceClient(Configuration.GetConnectionString("BlobAccessKey"));
+            });
+
+            services.AddScoped<IBlobService, BlobService>();
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IProduct, ProductRepository>();
             services.AddTransient<ICategory, CategoryRepository>();
@@ -62,9 +72,9 @@ namespace backend
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
-          // options.Authentication
+                // options.Authentication
 
-          options.EmitStaticAudienceClaim = true;
+                options.EmitStaticAudienceClaim = true;
             })
                 .AddAspNetIdentity<IdentityUser>()
                 .AddInMemoryIdentityResources(Config.IdentityResources)
