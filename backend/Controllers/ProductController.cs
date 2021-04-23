@@ -54,7 +54,7 @@ namespace backend.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductVM>> UpdateProduct(int id, ProductVM productReq)
+        public async Task<ActionResult<ProductVM>> UpdateProduct(int id, [FromForm] ProductRequest productReq)
         {
             var productRes = await _productRepository.UpdateProduct(id, productReq);
 

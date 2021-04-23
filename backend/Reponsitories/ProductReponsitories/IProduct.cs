@@ -11,7 +11,7 @@ namespace backend.Reponsitories.ProductReponsitories
         Task<IEnumerable<ProductVM>> GetProducts();
         Task<ProductVM> CreateProduct(ProductRequest productReq);
 
-        Task<ProductVM> UpdateProduct(int productId, ProductVM productReq);
+        Task<ProductVM> UpdateProduct(int productId, ProductRequest productReq);
 
         Task<ProductVM> DeleteProduct(int productId);
     }

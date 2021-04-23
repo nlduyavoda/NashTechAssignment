@@ -1,29 +1,24 @@
 import axios from "axios";
-import { Formik } from "formik";
 import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Col, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { useHistory } from "react-router";
 import { host } from "../../../config";
 import ProductProvider, { ProductContext } from '../../../contexts/products';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-// import { ProductContext } from "../contexts/products";
+const Editform = (props) => {
+    const id = props.location.id;
+    const productItem = props.location.product;
+    const history = useHistory();
 
-const editform = () => {
     const { products, categories } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
-
-    console.log(categories);
-
     const onSubmit = (data) => {
-        // console.log(data);
-
         data = {
             ...data,
             categoryId: Number(data.categoryId),
             price: Number(data.price),
         };
-        console.log(data);
-
         var formData = new FormData();
 
         formData.append('name', data.name);
@@ -34,39 +29,33 @@ const editform = () => {
             formData.append('images', image);
         });
 
-        console.log(formData);
-
-        // Object.keys(data).forEach(key => {
-        //     formData.append(key, data[key]);
-        // });
-
         axios({
-            method: 'post',
-            url: host + '/api/product',
+            method: 'put',
+            url: host + '/api/product/' + id,
             data: formData,
         }).then((res) => {
             console.log(res.data);
+            history.push("/");
         }).catch(err => {
-            console.log('err from post', err);
+            console.log('err from put', err);
         });
         console.log(data, 'product');
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("name")} placeholder="Name" />
-            <input {...register("price")} placeholder="Price" formEncType='multipart/form-data' />
+            <input {...register("name")} placeholder="Name" value={productItem.name} />
+            <input {...register("price")} placeholder="Price" formEncType='multipart/form-data' value={productItem.price} />
             <select {...register("categoryId")}>
-                <option>Select ProductCategory </option>
+                <option selected={true} value={productItem.categoryId}>{productItem.categoryName} </option>
                 {categories.map((cate, index) =>
                     <option value={cate.id}>{cate.name}</option>)}
             </select>
             <input type='file' multiple {...register("images")} />
-
             <input type="submit" />
         </form>
     );
 }
 
 
-export default editform;
+export default Editform;
 

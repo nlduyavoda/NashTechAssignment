@@ -5,25 +5,19 @@ import { Controller, useForm } from "react-hook-form";
 import { Col, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { host } from "../../../config";
 import ProductProvider, { ProductContext } from '../../../contexts/products';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 // import { ProductContext } from "../contexts/products";
-
 const Addform = () => {
     const { products, categories } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
-
-    console.log(categories);
-
     const onSubmit = (data) => {
-        // console.log(data);
-
         data = {
             ...data,
             categoryId: Number(data.categoryId),
             price: Number(data.price),
         };
-        console.log(data);
-
         var formData = new FormData();
 
         formData.append('name', data.name);
@@ -33,13 +27,6 @@ const Addform = () => {
         [...data.images].forEach(image => {
             formData.append('images', image);
         });
-
-        console.log(formData);
-
-        // Object.keys(data).forEach(key => {
-        //     formData.append(key, data[key]);
-        // });
-
         axios({
             method: 'post',
             url: host + '/api/product',

@@ -40,8 +40,6 @@ export default ({ children }) => {
       })
       .catch(err => console.log(err))
   }, [])
-
-  //api get categories
   useEffect(() => {
     axios.get(host + "/api/categories")
       .then(resp => {

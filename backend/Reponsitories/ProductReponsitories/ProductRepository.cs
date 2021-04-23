@@ -94,7 +94,7 @@ namespace backend.Reponsitories.ProductReponsitories
             return productRes;
         }
 
-        public async Task<ProductVM> UpdateProduct(int productId, ProductVM productReq)
+        public async Task<ProductVM> UpdateProduct(int productId, ProductRequest productReq)
         {
             var existProduct = await _context.Products.FindAsync(productId);
 
@@ -102,9 +102,26 @@ namespace backend.Reponsitories.ProductReponsitories
             // {
             //   throw new NotFoundException($"Product id {productId} not found");
             // }
+            existProduct.Name = productReq.Name;
+            existProduct.Price = productReq.Price;
+            existProduct.CategoryId = productReq.CategoryId;
 
-            _context.Entry<Product>(existProduct).CurrentValues.SetValues(productReq);
+            if (productReq.Images is not null)
+            {
+                foreach (var image in productReq.Images)
+                {
+                    var imageUrl = await UploadImage(image);
 
+                    var newImage = new Image
+                    {
+                        ProductId = existProduct.Id,
+                        pathImage = imageUrl,
+                    };
+
+                    await _context.Image.AddAsync(newImage);
+                }
+
+            }
             await _context.SaveChangesAsync();
 
             var productRes = _mapper.Map<ProductVM>(existProduct);
