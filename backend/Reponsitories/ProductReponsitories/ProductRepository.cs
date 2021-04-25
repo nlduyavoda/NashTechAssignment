@@ -55,7 +55,7 @@ namespace backend.Reponsitories.ProductReponsitories
             //   throw new NotFoundException($"{productId} Not Found");
             // }
 
-            product.IsDelete = true;
+            product.IsDelete = false;
             await _context.SaveChangesAsync();
 
             var productRes = _mapper.Map<ProductVM>(product);
@@ -105,6 +105,8 @@ namespace backend.Reponsitories.ProductReponsitories
             existProduct.Name = productReq.Name;
             existProduct.Price = productReq.Price;
             existProduct.CategoryId = productReq.CategoryId;
+            // existProduct.IsDelete = productReq.isDelete;
+
 
             if (productReq.Images is not null)
             {

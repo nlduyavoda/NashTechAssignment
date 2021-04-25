@@ -67,6 +67,7 @@ namespace backend.Controllers
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public int Price { get; set; }
+        // public bool isDelete { get; set; }
         public List<IFormFile> Images { get; set; }
     }
 }

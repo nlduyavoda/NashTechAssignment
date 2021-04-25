@@ -10,6 +10,8 @@ import Addform from './components/form/product/add';
 import Editform from './components/form/product/edit';
 import Home from './Container/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'sweetalert2/src/sweetalert2.scss'
+
 
 
 
