@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Table, Button } from 'reactstrap';
-import { PenFill, TruckFlatbed } from 'react-bootstrap-icons';
+import { PenFill, Trash2Fill, TruckFlatbed } from 'react-bootstrap-icons';
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ProductContext } from '../contexts/products';
@@ -12,12 +12,13 @@ import { useHistory } from "react-router";
 
 
 
+
 const Home = () => {
-  const { products } = useContext(ProductContext);
+  const { products, handleDelete } = useContext(ProductContext);
   const { editable, setEditable } = useState(false);
   const history = useHistory();
 
-  const openForm = (prod) => {
+  const deleteForm = (prod) => {
     console.log('proID: ', prod.id);
     console.log('proIsDelete: ', prod.isDelete);
     Swal.fire(
@@ -32,26 +33,10 @@ const Home = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           console.log('is Confirmed', prod.isDelete)
-          // const onSubmit = (data) => {
-          //   data = {
-          //     isDelete: !prod.isDelete
-          //   };
-          //   console.log(data);
-          //   console.log("form data", data);
           result = !prod.isDelete;
           console.log(result);
+          handleDelete(prod.id);
 
-          axios({
-            method: 'delete',
-            url: host + '/api/product/' + prod.id,
-            result: !prod.isDelete,
-          }).then((res) => {
-            console.log('res data', res);
-            history.push("/");
-          }).catch(err => {
-            console.log('err from put', err);
-          });
-          console.log(result, 'product');
           Swal.fire(
             'Deleted!',
             'Your file has been deleted.',
@@ -71,7 +56,7 @@ const Home = () => {
             <th>Product Price</th>
             <th>Category</th>
             <th>Product Images</th>
-            <th>#</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -115,11 +100,13 @@ const Home = () => {
                   </Link>
                 </Button>
                 <Button type="button" value={prod.id}
-                  onClick={() => openForm({
+                  onClick={() => deleteForm({
                     id: prod.id,
                     isDelete: prod.isDelete
                   })}
-                  className="mr-2">{prod.id} </Button>
+                  className="mr-2">
+                  <Trash2Fill color="white" size={20} />
+                </Button>
               </td>
             </tr> : ''
           ))}

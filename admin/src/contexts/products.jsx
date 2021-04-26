@@ -13,6 +13,26 @@ export default ({ children }) => {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
 
+  const handleDelete = (id) => {
+    axios({
+      method: 'delete',
+      url: host + '/api/product/' + id,
+    }).then((res) => {
+      console.log('res data', res);
+      if (res.data) {
+        axios.get(host + "/api/Product")
+          .then(resp => {
+            var re = resp.data;
+            setProducts(re);
+          })
+          .catch(err => console.log(err))
+      }
+
+    }).catch(err => {
+      console.log('err from put', err);
+    });
+  }
+
   const addToCart = (id) => {
     const index = cart.findIndex(existId => existId.item.id === id);
     if (index !== -1) {
@@ -57,6 +77,7 @@ export default ({ children }) => {
       cart,
       addToCart,
       total,
+      handleDelete,
     }}>
       {children}
     </ProductContext.Provider>
