@@ -15,8 +15,7 @@ import { useHistory } from "react-router";
 
 const Home = () => {
   const { products, handleDelete } = useContext(ProductContext);
-  const { editable, setEditable } = useState(false);
-  const history = useHistory();
+  const { editable } = useState(false);
 
   const deleteForm = (prod) => {
     console.log('proID: ', prod.id);
@@ -115,5 +114,4 @@ const Home = () => {
     </form>
   )
 }
-
 export default Home
