@@ -240,13 +240,13 @@
             <div class="row featured__filter">
                 @foreach (var product in Model)
                 {
-                    @await Component.InvokeAsync("Product", product);
+                    @await Component.InvokeAsync("Product", product)
+                    ;
                 }
             </div>
         </div>
     </section>
     <!-- Featured Section End -->
-
     <!-- Banner Begin -->
     <div class="banner">
         <div class="container">
