@@ -56,7 +56,8 @@ namespace backend
             services.AddTransient<ICategory, CategoryRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<IdentityUser>(options =>
+                options.SignIn.RequireConfirmedAccount = false)
                       .AddRoles<IdentityRole>()
                       .AddEntityFrameworkStores<MyDbContext>();
 
@@ -83,6 +84,22 @@ namespace backend
                 // .AddTestUsers(TestUsers.Users)
                 .AddDeveloperSigningCredential();
 
+            services.AddAuthentication()
+            .AddLocalApi("Bearer", option =>
+            {
+                option.ExpectedScope = "api1";
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Bearer", policy =>
+                {
+                    policy.AddAuthenticationSchemes("Bearer");
+                    policy.RequireAuthenticatedUser();
+                });
+            });
+
+
             services.AddControllersWithViews();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -107,8 +124,8 @@ namespace backend
 
             app.UseCookiePolicy(new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.None,
-                Secure = CookieSecurePolicy.None,
+                MinimumSameSitePolicy = SameSiteMode.Lax,
+                Secure = CookieSecurePolicy.Always,
             });
 
             app.UseCors(o =>
@@ -118,10 +135,10 @@ namespace backend
                 o.AllowAnyOrigin();
             });
             app.UseRouting();
-
             app.UseIdentityServer();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

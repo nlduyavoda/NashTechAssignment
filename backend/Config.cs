@@ -8,24 +8,24 @@ using System.Collections.Generic;
 
 namespace backend
 {
-  public static class Config
-  {
-    public static IEnumerable<IdentityResource> IdentityResources =>
-        new IdentityResource[]
-        {
+    public static class Config
+    {
+        public static IEnumerable<IdentityResource> IdentityResources =>
+            new IdentityResource[]
+            {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-        };
+            };
 
-    public static IEnumerable<ApiScope> ApiScopes =>
-        new ApiScope[]
-        {
+        public static IEnumerable<ApiScope> ApiScopes =>
+            new ApiScope[]
+            {
                 new ApiScope("api1"),
-        };
+            };
 
-    public static IEnumerable<Client> Clients =>
-        new Client[]
-        {
+        public static IEnumerable<Client> Clients =>
+            new Client[]
+            {
                 // m2m client credentials flow client
                 new Client
                 {
@@ -42,9 +42,35 @@ namespace backend
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
-                    }
-
+                    },
                 },
-        };
-  }
+                 new Client
+                {
+                    // unique ID for this client
+                    ClientId = "spa", 
+                    // human-friendly name displayed in IS
+                    ClientName = "React app", 
+                    // URL of client
+                    ClientUri = "http://localhost:3000", 
+                    // how client will interact with our identity server (Implicit is basic flow for web apps)
+                    AllowedGrantTypes = GrantTypes.Implicit, 
+                    // don't require client to send secret to token endpoint
+                    RequireClientSecret = false,
+                    RedirectUris =
+                    {             
+                        // can redirect here after login                     
+                        "http://localhost:3000/signin-oidc",
+                    },
+                    // can redirect here after logout
+                    PostLogoutRedirectUris = { "http://localhost:3000/signout-oidc" }, 
+                    // builds CORS policy for javascript clients
+                    AllowedCorsOrigins = { "http://localhost:3000" }, 
+                    // what resources this client can access
+                    AllowedScopes = { "openid", "profile", "api1" }, 
+                    // client is allowed to receive tokens via browser
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                }
+            };
+    }
 }
