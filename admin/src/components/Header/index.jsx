@@ -16,11 +16,16 @@ import {
 import { Link } from 'react-router-dom';
 import { Addform } from '../../components/form/product/add';
 import Button from '@material-ui/core/Button';
+
+import { useSelector } from "react-redux";
+import { signoutRedirect } from "../../services/authService";
 // import { ProductContext } from '../../contexts/products';
 
 export default (props) => {
   const [isOpen, setIsOpen] = useState(false);
   // const { cart, total } = useContext(ProductContext);
+  const user = useSelector((state) => state.auth.user);
+  const signOut = () => signoutRedirect();
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -45,6 +50,17 @@ export default (props) => {
               Create Product
                   </Link>
           </Button>
+          <div className="float-right ">
+            <span>Hello,{user?.profile.name}</span>
+            <Button
+              color="link"
+              onClick={signOut}
+              className="pl-3 text-danger"
+              size="sm"
+            >
+              Sign Out
+        </Button>
+          </div>
           <Link to='/cartdetail'>
             <NavbarBrand NavbarBrand >
               {/* {cart.length} items - ${total} */}

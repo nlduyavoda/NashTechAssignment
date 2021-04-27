@@ -48,7 +48,6 @@ const Addform = () => {
                     <option value={cate.id}>{cate.name}</option>)}
             </select>
             <input type='file' multiple {...register("images")} />
-
             <input type="submit" />
         </form>
     );

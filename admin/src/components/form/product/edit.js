@@ -44,9 +44,9 @@ const Editform = (props) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label>Name: </label>
-            <input  {...register("name")} placeholder="Name" value={productItem.name} />
+            <input  {...register("name")} placeholder="Name" value={productItem.name} />{productItem.name}
             <label>Price: </label>
-            <input {...register("price")} placeholder="Price" formEncType='multipart/form-data' value={productItem.price} />
+            <input {...register("price")} placeholder="Price" formEncType='multipart/form-data' value={productItem.price} />{productItem.price}
             <label>Catgory: </label>
             <select {...register("categoryId")}>
                 <option selected={true} value={productItem.categoryId}>{productItem.categoryName} </option>
