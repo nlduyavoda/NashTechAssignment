@@ -32,6 +32,26 @@ export default ({ children }) => {
       console.log('err from put', err);
     });
   }
+  const handleEditCategory = (formData, id) => {
+    axios({
+      method: 'put',
+      url: host + '/api/categories/' + id,
+      data: formData,
+    }).then((res) => {
+      console.log(res.data);
+      if (res.data) {
+        axios.get(host + "/api/categories")
+          .then(resp => {
+            var re = resp.data;
+            setProducts(re);
+          })
+          .catch(err => console.log(err))
+      }
+    }).catch(err => {
+      console.log('err from put', err);
+    });
+  }
+
 
   const addToCart = (id) => {
     const index = cart.findIndex(existId => existId.item.id === id);
@@ -78,6 +98,7 @@ export default ({ children }) => {
       addToCart,
       total,
       handleDelete,
+      handleEditCategory,
     }}>
       {children}
     </ProductContext.Provider>

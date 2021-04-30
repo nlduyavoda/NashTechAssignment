@@ -1,11 +1,12 @@
 import React, { createContext, useState } from 'react';
-import { signinRedirectCallback } from '../Services/authService';
+import { signinRedirectCallback } from '../services/authService';
 import {
     STORE_USER,
     USER_SIGNED_OUT,
     USER_EXPIRED,
     LOADING_USER,
-} from './types';
+    STORE_USER_ERROR,
+} from '../actions/types';
 import { setAuthHeader } from "../utils/axiosHeaders";
 
 
@@ -59,7 +60,8 @@ const AuthContextProvider = ({ children }) => {
             user,
             setAuth,
             setUser,
-            signInRedirectCallback
+            signInRedirectCallback,
+            AuthContextProvider
         }}>
             {children}
         </AuthContext.Provider>
