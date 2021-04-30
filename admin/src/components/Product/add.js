@@ -3,15 +3,15 @@ import { Formik } from "formik";
 import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Col, Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { host } from "../../../config";
-import ProductProvider, { ProductContext } from '../../../contexts/products';
+import { host } from "../../config";
+import ProductProvider, { ProductContext } from '../../contexts/products';
 // import RequestService from "../../../services/request";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 // import { ProductContext } from "../contexts/products";
 const Addform = () => {
-    const { products, categories } = useContext(ProductContext);
+    const { categories, handleCreateProduct } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
     const onSubmit = (data) => {
         data = {
@@ -28,16 +28,7 @@ const Addform = () => {
         [...data.images].forEach(image => {
             formData.append('images', image);
         });
-        axios({
-            method: 'post',
-            url: host + '/api/product',
-            data: formData,
-        }).then((res) => {
-            console.log(res.data);
-        }).catch(err => {
-            console.log('err from post', err);
-        });
-        console.log(data, 'product');
+        handleCreateProduct(formData)
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

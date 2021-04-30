@@ -4,9 +4,9 @@ import { Table, Button } from 'reactstrap';
 import { PenFill, Trash2Fill, TruckFlatbed } from 'react-bootstrap-icons';
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ProductContext } from '../contexts/products';
+import { ProductContext } from '../../contexts/products';
 import { useContext, useState } from 'react';
-import { host } from "../config";
+import { host } from "../../config";
 import Swal from 'sweetalert2'
 import { useHistory } from "react-router";
 

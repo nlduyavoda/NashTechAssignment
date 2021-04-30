@@ -2,11 +2,12 @@ import Header from './components/Header';
 import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Link } from "react-router-dom";
-import Addform from './components/form/product/add';
-import EditProduct from './components/form/product/edit';
-import Home from './components/Product/Home';
-import Category from './components/Category/Category';
-import EditCategory from './components/form/category/edit';
+import Addform from './components/Product/add';
+import ShowProduct from './components/Product/show'
+import EditProduct from './components/Product/edit'
+// import Home from './components/Category/Home';
+// import Category from './components/Category/Category';
+// import EditCategory from './components/Category/edit';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'sweetalert2/src/sweetalert2.scss'
@@ -19,6 +20,7 @@ import { Provider } from "react-redux";
 import SignoutOidc from "../src/pages/auth/Signout-oidc";
 import SigninOidc from "../src/pages/auth/Signin-oidc";
 import { Switch } from 'react-router-dom';
+import Home from './components/Home/Home';
 
 
 
@@ -39,17 +41,17 @@ function App() {
           <Switch>
             <Route path="/signout-oidc" component={SignoutOidc} />
             <Route path="/signin-oidc" component={SigninOidc} />
-
-            <ProtecedRoute exact path="/">
-              <Home />
+            <Route exact path="/" component={Home}>
+            </Route>
+            <ProtecedRoute exact path="/product">
+              <ShowProduct />
             </ProtecedRoute>
-            <Route exact path="/components/form/product/Addform">
-              <Addform />
+            <Route exact path="/add-product" component={Addform}>
             </Route>
             <Route path="/edit-product" component={EditProduct}>
             </Route>
 
-            <Route exact path="/category">
+            {/* <Route exact path="/category">
               <Category />
             </Route>
             <Route exact path="/components/form/category/Addform">
@@ -57,10 +59,7 @@ function App() {
             </Route>
             <Route path="/edit-category" component={EditCategory}>
             </Route>
-
-
-
-
+ */}
           </Switch>
         </BrowserRouter>
       </AuthProvider>

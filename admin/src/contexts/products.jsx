@@ -3,6 +3,8 @@ import React, { createContext, useEffect, useState } from 'react';
 import { host } from '../config';
 import items from '../productItems.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useHistory } from "react-router";
+
 
 export const ProductContext = createContext({});
 
@@ -12,6 +14,8 @@ export default ({ children }) => {
   const [selectedItem, setSelectedItem] = useState({});
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const history = useHistory();
+
 
   const handleDelete = (id) => {
     axios({
@@ -47,6 +51,7 @@ export default ({ children }) => {
           })
           .catch(err => console.log(err))
       }
+      history.push("/category");
     }).catch(err => {
       console.log('err from put', err);
     });
@@ -69,6 +74,48 @@ export default ({ children }) => {
       newTotal += cartItem.quantity * cartItem.item.price, 0));
 
   }, [cart]);
+  //put product
+  const handleEditProduct = (formData, id) => {
+    axios({
+      method: 'put',
+      url: host + '/api/Product/' + id,
+      data: formData,
+    }).then((res) => {
+      console.log(res.data);
+      if (res.data) {
+        axios.get(host + "/api/Product")
+          .then(resp => {
+            var re = resp.data;
+            setProducts(re);
+            history.push("/product");
+          })
+          .catch(err => console.log(err))
+      }
+    }).catch(err => {
+      console.log('err from put', err);
+    });
+  }
+
+  const handleCreateProduct = (formData) => {
+    axios({
+      method: 'post',
+      url: host + '/api/Product/',
+      data: formData,
+    }).then((res) => {
+      console.log(res.data);
+      if (res.data) {
+        axios.get(host + "/api/Product")
+          .then(resp => {
+            var re = resp.data;
+            setProducts(re);
+            history.push("/product");
+          })
+          .catch(err => console.log(err))
+      }
+    }).catch(err => {
+      console.log('err from put', err);
+    });
+  }
 
 
   //api get products
@@ -99,6 +146,8 @@ export default ({ children }) => {
       total,
       handleDelete,
       handleEditCategory,
+      handleEditProduct,
+      handleCreateProduct
     }}>
       {children}
     </ProductContext.Provider>

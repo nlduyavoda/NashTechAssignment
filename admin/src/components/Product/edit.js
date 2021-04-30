@@ -2,16 +2,16 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router";
-import { host } from "../../../config";
-import ProductProvider, { ProductContext } from '../../../contexts/products';
+import { host } from "../../config";
+import { ProductContext } from '../../contexts/products';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Editform = (props) => {
     const id = props.location.id;
     const productItem = props.location.product;
-    const history = useHistory();
 
-    const { products, categories } = useContext(ProductContext);
+
+    const { categories, handleEditProduct } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
     const onSubmit = (data) => {
         data = {
@@ -24,29 +24,19 @@ const Editform = (props) => {
         formData.append('name', data.name);
         formData.append('price', data.price);
         formData.append('categoryId', data.categoryId);
-
         [...data.images].forEach(image => {
             formData.append('images', image);
         });
+        handleEditProduct(formData, id);
 
-        axios({
-            method: 'put',
-            url: host + '/api/product/' + id,
-            data: formData,
-        }).then((res) => {
-            console.log(res.data);
-            history.push("/");
-        }).catch(err => {
-            console.log('err from put', err);
-        });
-        console.log(data, 'product');
+
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label>Name: </label>
-            <input  {...register("name")} placeholder="Name" value={productItem.name} />
+            <input  {...register("name")} placeholder="Name" />
             <label>Price: </label>
-            <input {...register("price")} placeholder="Price" formEncType='multipart/form-data' value={productItem.price} />
+            <input {...register("price")} placeholder="Price" formEncType='multipart/form-data' />
             <label>Catgory: </label>
             <select {...register("categoryId")}>
                 <option selected={true} value={productItem.categoryId}>{productItem.categoryName} </option>

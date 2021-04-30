@@ -31,30 +31,23 @@ export default (props) => {
     <div>
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">Admin - Dashboard</NavbarBrand>
-        {
-          isAuth ?
-            <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
-              <DropdownToggle caret>
-                Action
+        <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+          <DropdownToggle caret>
+            Action
           </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem header>
-                  <Link to='/category'>
-                    Category manage
-              </Link>
-                </DropdownItem>
-                <DropdownItem header>
-                  <Link to='/components/form/product/Addform'>
-                    Create Product
-              </Link>
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown> :
-            <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
-              <DropdownToggle caret>Login to active
-              </DropdownToggle>
-            </Dropdown>
-        }
+          <DropdownMenu>
+            <DropdownItem header>
+              <Link to='/product'>
+                Product manage
+                  </Link>
+            </DropdownItem>
+            <DropdownItem header>
+              <Link to='/category'>
+                Category manage
+                  </Link>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
