@@ -5,51 +5,62 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
+  Dropdown,
+  ButtonDropdown,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Addform } from '../../components/form/product/add';
 import Button from '@material-ui/core/Button';
-
+import { AuthContext } from '../../contexts/authContext';
 import { useSelector } from "react-redux";
 import { signoutRedirect } from "../../services/authService";
-// import { ProductContext } from '../../contexts/products';
 
 export default (props) => {
   const [isOpen, setIsOpen] = useState(false);
   // const { cart, total } = useContext(ProductContext);
   const user = useSelector((state) => state.auth.user);
   const signOut = () => signoutRedirect();
-
-  const toggle = () => setIsOpen(!isOpen);
-
+  const { isAuth } = useContext(AuthContext)
+  const [dropdownOpen, setOpen] = useState(false);
+  const toggle = () => setOpen(!dropdownOpen);
+  console.log('isAuth', isAuth)
   return (
     <div>
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">Admin - Dashboard</NavbarBrand>
+        {
+          isAuth ?
+            <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+              <DropdownToggle caret>
+                Action
+          </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem header>
+                  <Link to='/category'>
+                    Category manage
+              </Link>
+                </DropdownItem>
+                <DropdownItem header>
+                  <Link to='/components/form/product/Addform'>
+                    Create Product
+              </Link>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown> :
+            <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+              <DropdownToggle caret>Login to active
+              </DropdownToggle>
+            </Dropdown>
+        }
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
-              <NavLink href="/components/">Components</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-            </NavItem>
             <UncontrolledDropdown nav inNavbar>
             </UncontrolledDropdown>
           </Nav>
-          <Button variant="contained" id="button-createProduct" color="primary">
-            <Link to='/components/form/product/Addform'>
-              Create Product
-                  </Link>
-          </Button>
           <div className="float-right ">
             <span>Hello,{user?.profile.name}</span>
             <Button
