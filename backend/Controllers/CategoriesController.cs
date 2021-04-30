@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using LibraryShare.Categories;
 using backend.Reponsitories.CategoryRepositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using backend.Constatnts;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize("Bearer")]
     public class CategoriesController : ControllerBase
     {
         private ICategory _CategoryRepository;
@@ -34,5 +35,28 @@ namespace backend.Controllers
             var result = await _CategoryRepository.GetCategories();
             return Ok(result);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<CategoriesVM>> CreateCategory([FromForm] CategoryRequest categoryReq)
+        {
+            var category = await _CategoryRepository.CreateCategory(categoryReq);
+
+            return Created(Endpoints.Categories, category);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CategoriesVM>> UpdateProduct(int id, [FromForm] CategoryRequest categoryReq)
+        {
+            var productResponse = await _CategoryRepository.Updatecategory(id, categoryReq);
+
+            return Ok(productResponse);
+        }
+    }
+    public class CategoryRequest
+    {
+        public string Name { get; set; }
+        // public bool isDelete { get; set; }
+        public IFormFile pathImage { get; set; }
     }
 }
