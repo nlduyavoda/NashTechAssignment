@@ -23,10 +23,15 @@ namespace client
     }
 
     public IConfiguration Configuration { get; }
-
+    public static Dictionary<string, string> clientUrls;
     public void ConfigureServices(IServiceCollection services)
     {
       // JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+      clientUrls = new Dictionary<string, string>
+      {
+        ["Backend"] = Configuration["ClientUrl:Backend"],
+      };
+
 
       services.AddAuthentication(options =>
           {
@@ -40,7 +45,7 @@ namespace client
           })
           .AddOpenIdConnect("oidc", options =>
           {
-            options.Authority = "http://localhost:5000";
+            options.Authority = $"{clientUrls["Backend"]}"; ;
             options.RequireHttpsMetadata = false;
             options.GetClaimsFromUserInfoEndpoint = true;
             // options.
