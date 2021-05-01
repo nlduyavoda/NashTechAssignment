@@ -2,12 +2,14 @@ import Header from './components/Header';
 import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Link } from "react-router-dom";
+
 import Addform from './components/Product/add';
 import ShowProduct from './components/Product/show'
 import EditProduct from './components/Product/edit'
-// import Home from './components/Category/Home';
-// import Category from './components/Category/Category';
-// import EditCategory from './components/Category/edit';
+
+import ShowCategory from './components/Category/show';
+import Addcategory from './components/Category/add';
+import EditCategory from './components/Category/edit';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'sweetalert2/src/sweetalert2.scss'
@@ -51,15 +53,13 @@ function App() {
             <Route path="/edit-product" component={EditProduct}>
             </Route>
 
-            {/* <Route exact path="/category">
-              <Category />
-            </Route>
-            <Route exact path="/components/form/category/Addform">
-              <Addform />
+            <ProtecedRoute exact path="/category">
+              <ShowCategory />
+            </ProtecedRoute>
+            <Route exact path="/add-category" component={Addcategory}>
             </Route>
             <Route path="/edit-category" component={EditCategory}>
             </Route>
- */}
           </Switch>
         </BrowserRouter>
       </AuthProvider>

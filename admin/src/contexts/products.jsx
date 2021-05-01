@@ -56,8 +56,6 @@ export default ({ children }) => {
       console.log('err from put', err);
     });
   }
-
-
   const addToCart = (id) => {
     const index = cart.findIndex(existId => existId.item.id === id);
     if (index !== -1) {
@@ -68,13 +66,11 @@ export default ({ children }) => {
     }
     setCart([...cart]);
   };
-
   useEffect(() => {
     setTotal(cart.reduce((newTotal, cartItem) =>
       newTotal += cartItem.quantity * cartItem.item.price, 0));
 
   }, [cart]);
-  //put product
   const handleEditProduct = (formData, id) => {
     axios({
       method: 'put',
@@ -95,7 +91,6 @@ export default ({ children }) => {
       console.log('err from put', err);
     });
   }
-
   const handleCreateProduct = (formData) => {
     axios({
       method: 'post',
@@ -116,8 +111,26 @@ export default ({ children }) => {
       console.log('err from put', err);
     });
   }
-
-
+  const handleCreateCategory = (formData) => {
+    axios({
+      method: 'post',
+      url: host + '/api/categories/',
+      data: formData,
+    }).then((res) => {
+      console.log(res.data);
+      if (res.data) {
+        axios.get(host + "/api/categories")
+          .then(resp => {
+            var re = resp.data;
+            setProducts(re);
+            history.push("/category");
+          })
+          .catch(err => console.log(err))
+      }
+    }).catch(err => {
+      console.log('err from post', err);
+    });
+  }
   //api get products
   useEffect(() => {
     axios.get(host + "/api/Product")
@@ -145,6 +158,7 @@ export default ({ children }) => {
       addToCart,
       total,
       handleDelete,
+      handleCreateCategory,
       handleEditCategory,
       handleEditProduct,
       handleCreateProduct

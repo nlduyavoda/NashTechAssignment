@@ -13,105 +13,62 @@ import { useHistory } from "react-router";
 
 
 
-const Home = () => {
-  const { products, handleDelete } = useContext(ProductContext);
+const ShowCategory = () => {
+  const { categories } = useContext(ProductContext);
   const { editable } = useState(false);
 
-  const deleteForm = (prod) => {
-    console.log('proID: ', prod.id);
-    console.log('proIsDelete: ', prod.isDelete);
-    Swal.fire(
-      {
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('is Confirmed', prod.isDelete)
-          result = !prod.isDelete;
-          console.log(result);
-          handleDelete(prod.id);
-
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
-        }
-      })
-  }
   return (
     <form>
       <Table responsive={true} color={true} striped={true}>
         <thead>
           <tr>
             <th>STT</th>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Product Price</th>
-            <th>Category</th>
-            <th>Product Images</th>
-            <th></th>
+            <th>Category Name</th>
+            <th>Category Images</th>
+            <th>
+              <Link to='/add-category'>
+                Create Category +
+                </Link>
+            </th>
           </tr>
         </thead>
         <tbody>
-          {products.map((prod, index) => (
-            prod.isDelete ? <tr key={prod.id}>
+          {categories.map((cate, index) => (
+            <tr key={cate.id}>
               <th className="align-middle" scope="row">
                 {index + 1}
               </th>
               <td className="align-middle">
-                {editable ? 'asd' : <p>{prod.id}</p>}
+                {editable ? 'asd' : <p>{cate.name}</p>}
               </td>
-              <td className="align-middle">
-                {editable ? 'asd' : <p>{prod.name}</p>}
+              <td>
+                <img
+                  className="img-fluid"
+                  src={host + cate.pathImage}
+                  alt="alu alu"
+                />
               </td>
-              <td className="align-middle">$ {prod.price}</td>
-              <td className="align-middle"> {prod.categoryName}</td>
-              {prod.images.length > 0 && (
-                <td>
-                  <img
-                    className="img-fluid"
-                    src={prod.images[prod.images.length - 1].pathImage}
-                    alt="alu alu"
-                  />
-                </td>
-              )}
+
 
               <td className="align-middle">
                 <Button color="secondary" className="mr-2">
                   <Link to={{
-                    pathname: '/components/form/product/Editform',
-                    id: prod.id,
-                    product: {
-                      name: prod.name,
-                      price: prod.price,
-                      categoryId: prod.categoryId,
-                      categoryName: prod.categoryName,
-                      images: null,
+                    pathname: '/edit-category',
+                    id: cate.id,
+                    category: {
+                      name: cate.name,
+                      pathImage: null,
                     }
                   }}>
                     <PenFill color="white" size={20} />
                   </Link>
                 </Button>
-                <Button type="button" value={prod.id}
-                  onClick={() => deleteForm({
-                    id: prod.id,
-                    isDelete: prod.isDelete
-                  })}
-                  className="mr-2">
-                  <Trash2Fill color="white" size={20} />
-                </Button>
               </td>
-            </tr> : ''
+            </tr>
           ))}
         </tbody>
       </Table>
     </form>
   )
 }
-export default Home
+export default ShowCategory
