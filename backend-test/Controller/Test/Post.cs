@@ -1,35 +1,37 @@
+using System.Threading.Tasks;
 using backend.Controllers;
 using backend.Reponsitories.ProductReponsitories;
+using backend_test.MockData;
 using Microsoft.AspNetCore.Mvc;
 using NashTechAssignment.backend_test;
 using Xunit;
 
 namespace backend_test.Controller.Test
 {
-    public class Get:IClassFixture<SqliteInMemoryFixture>
+    public class Post:IClassFixture<SqliteInMemoryFixture>
     {
         private readonly SqliteInMemoryFixture _fixture;
 
-        public Get(SqliteInMemoryFixture fixture)
+        public Post(SqliteInMemoryFixture fixture)
         {
             _fixture = fixture;
             _fixture.CreateDatabase();
         }
-
         [Fact]
-        public void GetAll_Success()
+        public async Task Post_Success()
         {
             // Arrange
             var dbContext = _fixture.Context;
-            var BlobService = BlobServiceMock.BlobService();
             var mapper = MapperMock.Get();
-            var productRepository = new ProductRepository(dbContext,BlobService,mapper);
+            var fileService = BlobServiceMock.BlobService();
+            var productToPost = NewData.CreateProduct();
+
+            var productRepository = new ProductRepository(dbContext, fileService, mapper);
             var productController = new ProductController(productRepository);
             // Act
-            var result = productController.GetProducts();
+            var result = await productController.CreateProduct(productToPost);
             // Assert
-            Assert.IsType<OkObjectResult>(result.Result);
-
+            Assert.IsType<CreatedAtActionResult>(result.Result); 
         }
     }
 }
