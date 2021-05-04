@@ -23,7 +23,13 @@ namespace backend
                 new ApiScope("api1"),
             };
 
-        public static IEnumerable<Client> Clients =>
+        public static IEnumerable<ApiResource> Apis =>
+           new ApiResource[]
+           {
+                new ApiResource("api1")
+           };
+
+        public static IEnumerable<Client> Clients(string clientUrl, string backendUrl) =>
             new Client[]
             {
                 // m2m client credentials flow client
@@ -33,15 +39,16 @@ namespace backend
                     ClientName = "name",
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = { new Secret("Secret".Sha256()) },
-                    RedirectUris = { "http://localhost:4000/signin-oidc" },
+                    RedirectUris = { $"{clientUrl}/signin-oidc" },
 
-                    PostLogoutRedirectUris = { "http://localhost:4000/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { $"{clientUrl}/signout-callback-oidc" },
                     RequireConsent = false,
 
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
                     },
                 },
                  new Client
@@ -51,7 +58,7 @@ namespace backend
                     // human-friendly name displayed in IS
                     ClientName = "React app", 
                     // URL of client
-                    ClientUri = "http://localhost:3000", 
+                    ClientUri = backendUrl, 
                     // how client will interact with our identity server (Implicit is basic flow for web apps)
                     AllowedGrantTypes = GrantTypes.Implicit, 
                     // don't require client to send secret to token endpoint
@@ -59,12 +66,12 @@ namespace backend
                     RedirectUris =
                     {             
                         // can redirect here after login                     
-                        "http://localhost:3000/signin-oidc",
+                        $"{backendUrl}/signin-oidc",
                     },
                     // can redirect here after logout
-                    PostLogoutRedirectUris = { "http://localhost:3000/signout-oidc" }, 
+                    PostLogoutRedirectUris = { $"{backendUrl}/signout-oidc" }, 
                     // builds CORS policy for javascript clients
-                    AllowedCorsOrigins = { "http://localhost:3000" }, 
+                    AllowedCorsOrigins = { backendUrl }, 
                     // what resources this client can access
                     AllowedScopes = { "openid", "profile", "api1" }, 
                     // client is allowed to receive tokens via browser
