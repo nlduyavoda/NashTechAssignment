@@ -67,6 +67,12 @@ namespace backend
                   config.LogoutPath = "/Auth/Logout";
               });
 
+            var clientUrls = new Dictionary<string, string>
+            {
+                ["Mvc"] = Configuration["Services:Mvc"],
+                ["Admin"] = Configuration["Services:Admin"],
+            };
+
             services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -80,8 +86,10 @@ namespace backend
                 .AddAspNetIdentity<IdentityUser>()
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryApiResources(Config.Apis)
+                .AddInMemoryClients(Config.Clients(clientUrls["Mvc"], clientUrls["Admin"]))
                 // .AddTestUsers(TestUsers.Users)
+                .AddProfileService<ProfileService>()
                 .AddDeveloperSigningCredential();
 
             services.AddAuthentication()
@@ -119,14 +127,8 @@ namespace backend
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backend v1"));
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                MinimumSameSitePolicy = SameSiteMode.Lax,
-                Secure = CookieSecurePolicy.Always,
-            });
 
             app.UseCors(o =>
             {

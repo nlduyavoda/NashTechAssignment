@@ -15,6 +15,11 @@ namespace backend.Reponsitories.ProductReponsitories
         private readonly IBlobService _blobService;
         private readonly IMapper _mapper;
         private MyDbContext _context;
+
+        public DbContext Context { get; }
+        public IBlobService BlobService { get; }
+        public IMapper Mapper { get; }
+
         public ProductRepository(MyDbContext context,
             IBlobService blobService,
             IMapper mapper)
@@ -23,6 +28,14 @@ namespace backend.Reponsitories.ProductReponsitories
             _mapper = mapper;
             _context = context;
         }
+
+        public ProductRepository(DbContext context, IBlobService blobService, IMapper mapper)
+        {
+            Context = context;
+            BlobService = blobService;
+            Mapper = mapper;
+        }
+
         public async Task<ProductVM> GetProduct(int Id)
         {
             var product = await _context.Products
