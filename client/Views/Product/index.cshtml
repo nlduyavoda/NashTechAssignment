@@ -29,9 +29,7 @@
           <li><a href="#">English</a></li>
         </ul>
       </div>
-      <div class="header__top__right__auth">
-        <a href="#"><i class="fa fa-user"></i> Login</a>
-      </div>
+
     </div>
     <nav class="humberger__menu__nav mobile-menu">
       <ul>
@@ -96,7 +94,21 @@
                 </ul>
               </div>
               <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                  <li class="menu-active">
+                    <a>@User.Identity.Name</a>
+                  </li>
+                  <li>
+                    <a href="/logout">Logout</a>
+                  </li>
+                }
+                else
+                {
+                  <li>
+                    <a href="~/login">Login</a>
+                  </li>
+                }
               </div>
             </div>
           </div>
@@ -225,7 +237,7 @@
         <div class="col-lg-6 col-md-6">
           <div class="product__details__pic">
             <div class="product__details__pic__item">
-              <img class="product__details__pic__item--large" src="@Model.Images[0].pathImage" alt="">
+              <img class="product__details__pic__item--large" src="~/@Model.Images[0].pathImage" alt="">
             </div>
             <div class="product__details__pic__slider owl-carousel">
               @foreach (var img in Model.Images)
@@ -238,20 +250,31 @@
         <div class="col-lg-6 col-md-6">
           <div class="product__details__text">
             <h3>Vetgetable’s Package</h3>
-            <form action="~/product/@Model.Id" method="POST">
-              <ul class="rate-area">
-                <input type="submit" id="5-star" name="rating" value="5" /><label for="5-star" title="Amazing">5
-                  stars</label>
-                <input type="submit" id="4-star" name="rating" value="4" /><label for="4-star" title="Good">4
-                  stars</label>
-                <input type="submit" id="3-star" name="rating" value="3" /><label for="3-star" title="Average">3
-                  stars</label>
-                <input type="submit" id="2-star" name="rating" value="2" /><label for="2-star" title="Not Good">2
-                  stars</label>
-                <input type="submit" id="1-star" name="rating" value="1" /><label for="1-star" title="Bad">1
-                  star</label>
-              </ul>
-            </form>
+            @if (User.Identity.IsAuthenticated)
+            {
+              <p class="text">Rated: (@String.Format("{0:0.0}", Model.Rated)) <i class="fas fa-star"
+                style="color: #F0ED00"></i></p>
+              <form action="~/product/@Model.Id" method="POST">
+                <ul class="rate-area">
+                  <input type="submit" id="5-star" name="rating" value="5" /><label for="5-star" title="Amazing">5
+                    stars</label>
+                  <input type="submit" id="4-star" name="rating" value="4" /><label for="4-star" title="Good">4
+                    stars</label>
+                  <input type="submit" id="3-star" name="rating" value="3" /><label for="3-star" title="Average">3
+                    stars</label>
+                  <input type="submit" id="2-star" name="rating" value="2" /><label for="2-star" title="Not Good">2
+                    stars</label>
+                  <input type="submit" id="1-star" name="rating" value="1" /><label for="1-star" title="Bad">1
+                    star</label>
+                </ul>
+              </form>
+
+            }
+            else
+            {
+              <p class="text">Rated: (@String.Format("{0:0.0}", Model.Rated)) <i class="fas fa-star"
+                style="color: #F0ED00"></i></p>
+            }
 
           </div>
           <div class="product__details__price">$@Model.Price</div>

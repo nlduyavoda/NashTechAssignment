@@ -14,30 +14,32 @@ using LibraryShare.Product;
 
 namespace client.Controllers
 {
-  public class HomeController : Controller
-  {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IHttpClientServices _client;
-    public HomeController(ILogger<HomeController> logger, IHttpClientServices client)
+    public class HomeController : Controller
     {
-      _logger = logger;
-      _client = client;
-    }
-    public async Task<ActionResult<IEnumerable<ProductVM>>> Index()
-    {
-      var product = await _client.GetProducts();
-      return View(product);
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientServices _client;
+        public HomeController(ILogger<HomeController> logger, IHttpClientServices client)
+        {
+            _logger = logger;
+            _client = client;
+        }
+        public async Task<ActionResult<IEnumerable<ProductVM>>> Index()
+        {
+            var user = User.Identity;
 
-    [Authorize]
-    public IActionResult Privacy()
-    {
-      return View("Index");
+            var product = await _client.GetProducts();
+            return View(product);
+        }
+
+        [Authorize]
+        public IActionResult Privacy()
+        {
+            return View("Index");
+        }
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-      return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
-  }
 }
