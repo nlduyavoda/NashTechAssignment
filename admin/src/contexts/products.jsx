@@ -3,8 +3,6 @@ import React, { createContext, useEffect, useState } from 'react';
 import { host } from '../config';
 import items from '../productItems.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useHistory } from "react-router";
-
 
 export const ProductContext = createContext({});
 
@@ -14,7 +12,6 @@ export default ({ children }) => {
   const [selectedItem, setSelectedItem] = useState({});
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const history = useHistory();
 
 
   const handleDelete = (id) => {
@@ -51,7 +48,6 @@ export default ({ children }) => {
           })
           .catch(err => console.log(err))
       }
-      history.push("/category");
     }).catch(err => {
       console.log('err from put', err);
     });
@@ -83,7 +79,6 @@ export default ({ children }) => {
           .then(resp => {
             var re = resp.data;
             setProducts(re);
-            history.push("/product");
           })
           .catch(err => console.log(err))
       }
@@ -103,7 +98,6 @@ export default ({ children }) => {
           .then(resp => {
             var re = resp.data;
             setProducts(re);
-            history.push("/product");
           })
           .catch(err => console.log(err))
       }
@@ -123,7 +117,6 @@ export default ({ children }) => {
           .then(resp => {
             var re = resp.data;
             setProducts(re);
-            history.push("/category");
           })
           .catch(err => console.log(err))
       }

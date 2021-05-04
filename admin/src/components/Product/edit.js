@@ -1,14 +1,16 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useHistory } from "react-router";
 import { host } from "../../config";
 import { ProductContext } from '../../contexts/products';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useHistory } from "react-router-dom";
+
 
 const Editform = (props) => {
     const id = props.location.id;
     const productItem = props.location.product;
+    const history = useHistory();
 
 
     const { categories, handleEditProduct } = useContext(ProductContext);
@@ -28,6 +30,8 @@ const Editform = (props) => {
             formData.append('images', image);
         });
         handleEditProduct(formData, id);
+        history.push('/product');
+
 
 
     };

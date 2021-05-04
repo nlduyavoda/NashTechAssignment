@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const EditCategory = (props) => {
     const id = props.location.id;
-
+    const history = useHistory();
     const { categories, handleCreateCategory } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
     const onSubmit = (data) => {
@@ -20,6 +20,8 @@ const EditCategory = (props) => {
         formData.append('name', data.name);
         formData.append('pathImage', data.pathImage);
         handleCreateCategory(formData, id)
+        history.push('/product');
+
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,13 +1,14 @@
 import { UserManager } from "oidc-client";
 import { storeUserError, storeUser } from "../actions/authAction";
+import { host, clientHost } from "../config";
 
 const config = {
-    authority: "http://localhost:5000",
+    authority: host,
     client_id: "spa",
-    redirect_uri: "http://localhost:3000/signin-oidc",
+    redirect_uri: `${clientHost}/signin-oidc`,
     response_type: "id_token token",
     scope: "openid profile api1",
-    post_logout_redirect_uri: "http://localhost:3000/signout-oidc",
+    post_logout_redirect_uri: `${clientHost}/signout-oidc`,
 };
 
 const userManager = new UserManager(config);

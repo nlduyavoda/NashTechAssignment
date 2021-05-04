@@ -7,12 +7,15 @@ import { host } from "../../config";
 import ProductProvider, { ProductContext } from '../../contexts/products';
 // import RequestService from "../../../services/request";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useHistory } from "react-router-dom";
+
 
 
 // import { ProductContext } from "../contexts/products";
 const Addcategory = () => {
     const { handleCreateCategory } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
+    const history = useHistory();
     const onSubmit = (data) => {
         data = {
             ...data,
@@ -23,6 +26,8 @@ const Addcategory = () => {
         formData.append('name', data.name);
         formData.append('pathImage', data.path);
         handleCreateCategory(formData)
+        history.push('/product');
+
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -6,11 +6,12 @@ import { Col, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { host } from "../../config";
 import ProductProvider, { ProductContext } from '../../contexts/products';
 // import RequestService from "../../../services/request";
+import { useHistory } from "react-router-dom";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-// import { ProductContext } from "../contexts/products";
 const Addform = () => {
+    const history = useHistory();
     const { categories, handleCreateProduct } = useContext(ProductContext);
     const { register, handleSubmit } = useForm();
     const onSubmit = (data) => {
@@ -28,7 +29,8 @@ const Addform = () => {
         [...data.images].forEach(image => {
             formData.append('images', image);
         });
-        handleCreateProduct(formData)
+        handleCreateProduct(formData);
+        history.push('/product');
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

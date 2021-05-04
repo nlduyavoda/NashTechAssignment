@@ -8,7 +8,6 @@ import { ProductContext } from '../../contexts/products';
 import { useContext, useState } from 'react';
 import { host } from "../../config";
 import Swal from 'sweetalert2'
-import { useHistory } from "react-router";
 import { ButtonBase } from "@material-ui/core";
 
 
@@ -81,7 +80,7 @@ const ShowProduct = () => {
                 <td>
                   <img
                     className="img-fluid"
-                    src={host + prod.images[prod.images.length - 1].pathImage}
+                    src={host + '/' + prod.images[prod.images.length - 1].pathImage}
                     alt="alu alu"
                   />
                 </td>

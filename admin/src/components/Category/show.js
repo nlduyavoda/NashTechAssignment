@@ -44,7 +44,7 @@ const ShowCategory = () => {
               <td>
                 <img
                   className="img-fluid"
-                  src={host + cate.pathImage}
+                  src={host + '/' + cate.pathImage}
                   alt="alu alu"
                 />
               </td>
