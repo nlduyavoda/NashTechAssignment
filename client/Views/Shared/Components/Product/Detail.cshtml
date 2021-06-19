@@ -1,9 +1,18 @@
+@model ProductVM
+
+@{
+    var img = "";
+    if (!Model.Images.Count.Equals(0))
+    {
+        img = Model.Images[0].pathImage;
+    }
+}
 <div class="container">
   <div class="row">
     <div class="col-lg-6 col-md-6">
       <div class="product__details__pic">
         <div class="product__details__pic__item">
-          <img class="product__details__pic__item--large" src="img/product/details/product-details-1.jpg" alt="">
+        <div class="featured__item__pic set-bg" data-setbg="https://localhost:5000/@img">
         </div>
         <div class="product__details__pic__slider owl-carousel">
           <img data-imgbigurl="img/product/details/product-details-2.jpg" src="img/product/details/thumb-1.jpg" alt="">

@@ -55,6 +55,8 @@ namespace backend
             services.AddTransient<IProduct, ProductRepository>();
             services.AddTransient<ICategory, CategoryRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
+            services.AddTransient<IStorageService, FileStorageService>();
+
 
             services.AddDefaultIdentity<IdentityUser>(options =>
                 options.SignIn.RequireConfirmedAccount = false)

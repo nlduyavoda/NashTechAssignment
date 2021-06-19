@@ -46,7 +46,7 @@ namespace backend.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<CategoriesVM>> UpdateProduct(int id, [FromForm] CategoryRequest categoryReq)
+        public async Task<ActionResult<CategoriesVM>> UpdateCategory(int id, [FromForm] CategoryRequest categoryReq)
         {
             var productResponse = await _CategoryRepository.Updatecategory(id, categoryReq);
 

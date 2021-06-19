@@ -20,7 +20,7 @@ const EditCategory = (props) => {
         formData.append('name', data.name);
         formData.append('pathImage', data.pathImage);
         handleCreateCategory(formData, id)
-        history.push('/product');
+        history.push('/categories');
 
     };
     return (

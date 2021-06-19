@@ -19,14 +19,17 @@ namespace backend.Reponsitories.ProductReponsitories
         public DbContext Context { get; }
         public IBlobService BlobService { get; }
         public IMapper Mapper { get; }
+                private readonly IStorageService _storageService;
+
 
         public ProductRepository(MyDbContext context,
             IBlobService blobService,
-            IMapper mapper)
+            IMapper mapper,IStorageService storageService)
         {
             _blobService = blobService;
             _mapper = mapper;
             _context = context;
+               _storageService = storageService;
         }
 
         public ProductRepository(DbContext context, IBlobService blobService, IMapper mapper)
@@ -144,10 +147,11 @@ namespace backend.Reponsitories.ProductReponsitories
             return productRes;
         }
 
-        private async Task<string> UploadImage(IFormFile imageFile)
+      private async Task<string> UploadImage(IFormFile imageFile)
         {
-            var image = await _blobService.UploadFileBlobAsync(imageFile.OpenReadStream(), imageFile.ContentType);
-            return image.AbsoluteUri;
+            var ImageUrl = await _storageService.SaveFile(imageFile);
+            // var image = await _blobService.UploadFileBlobAsync(imageFile.OpenReadStream(), imageFile.ContentType);
+            return ImageUrl;
         }
     }
 }

@@ -15,12 +15,15 @@ namespace backend.Reponsitories.CategoryRepositories
         private readonly IBlobService _blobService;
         private IMapper _mapper;
         private MyDbContext _context;
+        private readonly IStorageService _storageService;
         public CategoryRepository(MyDbContext context,
-           IMapper mapper)
+           IMapper mapper,IStorageService storageService)
         {
             _mapper = mapper;
             _context = context;
+            _storageService = storageService;
         }
+        
 
 
         public async Task<CategoriesVM> GetCategory(int Id)
@@ -83,14 +86,14 @@ namespace backend.Reponsitories.CategoryRepositories
 
 
                 var imageUrl = await UploadImage(categoryReq.pathImage);
+                category.pathImage = await UploadImage(categoryReq.pathImage);
+                // var newImage = new Image
+                // {
+                //     Id = category.Id,
+                //     pathImage = imageUrl,
+                // };
 
-                var newImage = new Image
-                {
-                    Id = category.Id,
-                    pathImage = imageUrl,
-                };
-
-                await _context.Image.AddAsync(newImage);
+                // await _context.Image.AddAsync(newImage);
 
                 await _context.SaveChangesAsync();
 
@@ -103,8 +106,9 @@ namespace backend.Reponsitories.CategoryRepositories
         }
         private async Task<string> UploadImage(IFormFile imageFile)
         {
-            var image = await _blobService.UploadFileBlobAsync(imageFile.OpenReadStream(), imageFile.ContentType);
-            return image.AbsoluteUri;
+            var ImageUrl = await _storageService.SaveFile(imageFile);
+            // var image = await _blobService.UploadFileBlobAsync(imageFile.OpenReadStream(), imageFile.ContentType);
+            return ImageUrl;
         }
     }
 }

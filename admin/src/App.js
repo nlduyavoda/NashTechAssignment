@@ -1,18 +1,18 @@
-import Header from './components/Header';
-import './App.css';
-import { useEffect } from 'react';
+import Header from "./components/Header";
+import "./App.css";
+import { useEffect } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
-import Addform from './components/Product/add';
-import ShowProduct from './components/Product/show'
-import EditProduct from './components/Product/edit'
+import Addform from "./components/Product/add";
+import ShowProduct from "./components/Product/show";
+import EditProduct from "./components/Product/edit";
 
-import ShowCategory from './components/Category/show';
-import Addcategory from './components/Category/add';
-import EditCategory from './components/Category/edit';
+import ShowCategory from "./components/Category/show";
+import Addcategory from "./components/Category/add";
+import EditCategory from "./components/Category/edit";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'sweetalert2/src/sweetalert2.scss'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "sweetalert2/src/sweetalert2.scss";
 import ProtecedRoute from "./utils/protectedRoute";
 
 import AuthProvider from "./utils/authProvider.js";
@@ -21,14 +21,8 @@ import store from "./store";
 import { Provider } from "react-redux";
 import SignoutOidc from "../src/pages/auth/Signout-oidc";
 import SigninOidc from "../src/pages/auth/Signin-oidc";
-import { Switch } from 'react-router-dom';
-import Home from './components/Home/Home';
-
-
-
-
-
-
+import { Switch } from "react-router-dom";
+import Home from "./components/Home/Home";
 
 function App() {
   useEffect(() => {
@@ -37,32 +31,27 @@ function App() {
 
   return (
     <Provider store={store}>
-      <AuthProvider userManager={userManager} store={store}>
-        <BrowserRouter>
-          <Header />
-          <Switch>
-            <Route path="/signout-oidc" component={SignoutOidc} />
-            <Route path="/signin-oidc" component={SigninOidc} />
-            <Route exact path="/" component={Home}>
-            </Route>
-            <ProtecedRoute exact path="/product">
-              <ShowProduct />
-            </ProtecedRoute>
-            <Route exact path="/add-product" component={Addform}>
-            </Route>
-            <Route path="/edit-product" component={EditProduct}>
-            </Route>
+      {/* <AuthProvider userManager={userManager} store={store}> */}
+      <BrowserRouter>
+        <Header />
+        <Switch>
+          {/* <Route path="/signout-oidc" component={SignoutOidc} />
+            <Route path="/signin-oidc" component={SigninOidc} /> */}
+          <Route exact path="/" component={Home}></Route>
+          <Route exact path="/product">
+            <ShowProduct />
+          </Route>
+          <Route exact path="/add-product" component={Addform}></Route>
+          <Route path="/edit-product" component={EditProduct}></Route>
 
-            <ProtecedRoute exact path="/category">
-              <ShowCategory />
-            </ProtecedRoute>
-            <Route exact path="/add-category" component={Addcategory}>
-            </Route>
-            <Route path="/edit-category" component={EditCategory}>
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </AuthProvider>
+          <Route exact path="/category">
+            <ShowCategory />
+          </Route>
+          <Route exact path="/add-category" component={Addcategory}></Route>
+          <Route path="/edit-category" component={EditCategory}></Route>
+        </Switch>
+      </BrowserRouter>
+      {/* </AuthProvider> */}
     </Provider>
   );
 }
