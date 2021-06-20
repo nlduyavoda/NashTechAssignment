@@ -35,13 +35,16 @@ export default ({ children }) => {
       });
   };
   const handleEditCategory = (formData, id) => {
+    for (var value of formData.values()) {
+      console.log(value);
+    }
     axios({
       method: "put",
       url: host + "/api/categories/" + id,
       data: formData,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data) {
           axios
             .get(host + "/api/categories")
@@ -119,15 +122,12 @@ export default ({ children }) => {
         console.log("err from put", err);
       });
   };
-  const handleCreateCategory = (formData) => {
-    axios(
-      {
-        method: "post",
-        url: host + "/api/categories/",
-        data: formData,
-      },
-      console.log("aaaaa", [formData])
-    )
+  async function handleCreateCategory(formData) {
+    await axios({
+      method: "post",
+      url: host + "/api/categories/",
+      data: formData,
+    })
       .then((res) => {
         if (res.data) {
           axios
@@ -144,7 +144,7 @@ export default ({ children }) => {
         console.log("err from post", err);
         // alert("fail");
       });
-  };
+  }
   //api get products
   useEffect(() => {
     axios

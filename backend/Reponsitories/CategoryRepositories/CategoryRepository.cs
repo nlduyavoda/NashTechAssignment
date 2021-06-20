@@ -54,14 +54,14 @@ namespace backend.Reponsitories.CategoryRepositories
             if (categoryReq.pathImage is not null)
             {
                 var imageUrl = await UploadImage(categoryReq.pathImage);
+                existCategory.pathImage = await UploadImage(categoryReq.pathImage);
+                // var newImage = new Image
+                // {
+                //     ProductId = existCategory.Id,
+                //     pathImage = imageUrl,
+                // };
 
-                var newImage = new Image
-                {
-                    ProductId = existCategory.Id,
-                    pathImage = imageUrl,
-                };
-
-                await _context.Image.AddAsync(newImage);
+                // await _context.Image.AddAsync(newImage);
             }
             await _context.SaveChangesAsync();
 

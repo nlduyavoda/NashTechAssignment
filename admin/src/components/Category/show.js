@@ -16,7 +16,7 @@ import { useHistory } from "react-router";
 const ShowCategory = () => {
   const { categories } = useContext(ProductContext);
   const { editable } = useState(false);
-
+// console.log(categories)
   return (
     <form>
       <Table responsive={true} color={true} striped={true}>
