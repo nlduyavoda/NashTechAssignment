@@ -100,11 +100,10 @@ namespace backend.Reponsitories.ProductReponsitories
                     ProductId = product.Id,
                     pathImage = imageUrl,
                 };
-
+                product.IsDelete = true;
                 await _context.Image.AddAsync(newImage);
                 await _context.SaveChangesAsync();
             }
-
             var productRes = _mapper.Map<ProductVM>(product);
 
             return productRes;

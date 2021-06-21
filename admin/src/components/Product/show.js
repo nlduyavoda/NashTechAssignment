@@ -53,65 +53,71 @@ const ShowProduct = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((prod, index) => (
-            <tr key={prod.id}>
-              <th className="align-middle" scope="row">
-                {index + 1}
-              </th>
-              <td className="align-middle">
-                {editable ? "asd" : <p>{prod.id}</p>}
-              </td>
-              <td className="align-middle">
-                {editable ? "asd" : <p>{prod.name}</p>}
-              </td>
-              <td className="align-middle">$ {prod.price}</td>
-              <td className="align-middle"> {prod.categoryName}</td>
-              {prod.images.length > 0 && (
-                <td>
-                  <img
-                    className="img-fluid"
-                    src={
-                      host + "/" + prod.images[prod.images.length - 1].pathImage
-                    }
-                    alt="alu alu"
-                  />
+          {products.map((prod, index) =>
+            prod.isDelete ? (
+              <tr key={prod.id}>
+                <th className="align-middle" scope="row">
+                  {index + 1}
+                </th>
+                <td className="align-middle">
+                  {editable ? "asd" : <p>{prod.id}</p>}
                 </td>
-              )}
+                <td className="align-middle">
+                  {editable ? "asd" : <p>{prod.name}</p>}
+                </td>
+                <td className="align-middle">$ {prod.price}</td>
+                <td className="align-middle"> {prod.categoryName}</td>
+                {prod.images.length > 0 && (
+                  <td>
+                    <img
+                      className="img-fluid"
+                      src={
+                        host +
+                        "/" +
+                        prod.images[prod.images.length - 1].pathImage
+                      }
+                      alt="alu alu"
+                    />
+                  </td>
+                )}
 
-              <td className="align-middle">
-                <Button color="secondary" className="mr-2">
-                  <Link
-                    to={{
-                      pathname: "/edit-product",
-                      id: prod.id,
-                      product: {
-                        name: prod.name,
-                        price: prod.price,
-                        categoryId: prod.categoryId,
-                        categoryName: prod.categoryName,
-                        images: null,
-                      },
-                    }}
+                <td className="align-middle">
+                  <Button color="secondary" className="mr-2">
+                    <Link
+                      to={{
+                        pathname: "/edit-product",
+                        id: prod.id,
+                        product: {
+                          name: prod.name,
+                          price: prod.price,
+                          categoryId: prod.categoryId,
+                          categoryName: prod.categoryName,
+                          images: null,
+                        },
+                      }}
+                    >
+                      <PenFill color="white" size={20} />
+                    </Link>
+                  </Button>
+                  <Button
+                    type="button"
+                    value={prod.id}
+                    onClick={() =>
+                      deleteForm({
+                        id: prod.id,
+                        isDelete: prod.isDelete,
+                      })
+                    }
+                    className="mr-2"
                   >
-                    <PenFill color="white" size={20} />
-                  </Link>
-                </Button>
-                <Button
-                  type="button"
-                  value={prod.id}
-                  onClick={() =>
-                    deleteForm({
-                      id: prod.id,
-                      isDelete: prod.isDelete,
-                    })
-                  }
-                  className="mr-2"
-                >
-                  <Trash2Fill color="white" size={20} />
-                </Button>
-              </td>
-            </tr>
-          ))}
+                    <Trash2Fill color="white" size={20} />
+                  </Button>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )
+          )}
         </tbody>
       </Table>
     </form>
