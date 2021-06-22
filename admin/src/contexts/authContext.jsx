@@ -11,7 +11,6 @@ import { setAuthHeader } from "../utils/axiosHeaders";
 
 
 export function storeUser(user) {
-    alert(user.access_token);
     setAuthHeader(user.access_token);
     return {
         type: STORE_USER,

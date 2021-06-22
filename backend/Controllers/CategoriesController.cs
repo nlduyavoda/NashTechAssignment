@@ -14,6 +14,8 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+        [Authorize("Bearer")]
+
     public class CategoriesController : ControllerBase
     {
         private ICategory _CategoryRepository;

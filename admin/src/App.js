@@ -22,6 +22,8 @@ import { Provider } from "react-redux";
 import SignoutOidc from "../src/pages/auth/Signout-oidc";
 import SigninOidc from "../src/pages/auth/Signin-oidc";
 import { Switch } from "react-router-dom";
+import PrivateRoute from "./utils/protectedRoute";
+
 import Home from "./components/Home/Home";
 
 function App() {
@@ -31,27 +33,27 @@ function App() {
 
   return (
     <Provider store={store}>
-      {/* <AuthProvider userManager={userManager} store={store}> */}
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          {/* <Route path="/signout-oidc" component={SignoutOidc} />
-            <Route path="/signin-oidc" component={SigninOidc} /> */}
-          <Route exact path="/" component={Home}></Route>
-          <Route exact path="/product">
-            <ShowProduct />
-          </Route>
-          <Route exact path="/add-product" component={Addform}></Route>
-          <Route path="/edit-product" component={EditProduct}></Route>
+      <AuthProvider userManager={userManager} store={store}>
+        <BrowserRouter>
+          <Header />
+          <Switch>
+            <Route path="/signout-oidc" component={SignoutOidc} />
+            <Route path="/signin-oidc" component={SigninOidc} />
+            <Route exact path="/" component={Home}></Route>
+            <PrivateRoute exact path="/product">
+              <ShowProduct />
+            </PrivateRoute>
+            <Route exact path="/add-product" component={Addform}></Route>
+            <Route path="/edit-product" component={EditProduct}></Route>
 
-          <Route exact path="/category">
-            <ShowCategory />
-          </Route>
-          <Route exact path="/add-category" component={Addcategory}></Route>
-          <Route path="/edit-category" component={EditCategory}></Route>
-        </Switch>
-      </BrowserRouter>
-      {/* </AuthProvider> */}
+            <PrivateRoute exact path="/category">
+              <ShowCategory />
+            </PrivateRoute>
+            <Route exact path="/add-category" component={Addcategory}></Route>
+            <Route path="/edit-category" component={EditCategory}></Route>
+          </Switch>
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   );
 }
